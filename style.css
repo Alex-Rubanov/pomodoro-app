@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.timer {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.timer-minutes, .timer-seconds {
+    font-size: 70px;
+    position: relative;
+}
+
+.timer-minutes:after {
+    content: ":";
+    position: absolute;
+    font-size: 70px;
+    top: -6px;
+    right: -20px;
+}
