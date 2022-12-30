@@ -1,10 +1,14 @@
 'use strict';
 
 const minutes = document.querySelector('.timer-minutes');
-const  seconds = document.querySelector('.timer-seconds');
+const seconds = document.querySelector('.timer-seconds');
+const playBtn = document.querySelector('.play-btn');
+const resetBtn = document.querySelector('.reset-btn');
 
 let totalTime = 25 * 60;
-let remainingTime;
+let breakTime = 5 * 60;
+let remainingTime = totalTime;
+let intervalID;
 
 const addZero = (number) => {
     if (number >= 0 && number < 10) {
@@ -14,34 +18,55 @@ const addZero = (number) => {
     }
 };
 
+const updateTime = (min = 25, sec = 0) => {
+    minutes.textContent = addZero(min);
+    seconds.textContent = addZero(sec);     
+};
+
 function setTime() {
-    totalTime--;
-    remainingTime = totalTime;
-    
-    let sec = Math.floor(totalTime % 60);
-    let min = Math.floor((totalTime / 60) % 25);
+    remainingTime--; 
 
-    function updateTime() {
-        minutes.textContent = addZero(min);
-        seconds.textContent = addZero(sec);   
-    }
+    let sec = Math.floor(remainingTime % 60);
+    let min = Math.floor((remainingTime / 60) % 25);
 
-    
-    updateTime();
-    stopTimer();  
+    updateTime(min, sec);
+    clearTimer(); 
 }
 
-const timer = setInterval(() => setTime(), 10);
 
-const stopTimer = () => {
-    if (totalTime <= 0) {
-        clearInterval(timer);
+
+
+const clearTimer = () => {
+    if (remainingTime <= 0) {
+        clearInterval(intervalID);
 
         minutes.textContent = '00';
         seconds.textContent = '00';
     }
 };
 
+const stopTimer = () => {
+    clearInterval(intervalID);
+};
 
+resetBtn.addEventListener('click', () => {
+    remainingTime = totalTime;
 
+    updateTime();
+    stopTimer();
+});
+
+playBtn.addEventListener('click', () => {
+    if (playBtn.className === 'pause-btn') {
+        stopTimer();
+
+        playBtn.textContent = 'Play';
+        playBtn.className = 'play-btn';
+    } else {
+        intervalID = setInterval(setTime, 10); 
+    
+        playBtn.textContent = 'Pause';
+        playBtn.className = 'pause-btn';
+    }
+});
 

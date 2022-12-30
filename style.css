@@ -4,8 +4,16 @@
     box-sizing: border-box;
 }
 
-.timer {
+.app-wrapper {
     min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.timer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,4 +31,22 @@
     font-size: 70px;
     top: -6px;
     right: -20px;
+}
+
+.control-btns {
+    display: flex;
+    gap: 20px;
+}
+
+.play-btn, .reset-btn, .pause-btn {
+    font-size: 25px;
+    padding: 1rem 1rem;  
+    border-radius: 10px;
+    border: none;
+    transition: border 0.2s;
+}
+
+.play-btn:hover, .reset-btn:hover, .pause-btn:hover {
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.5);
 }
