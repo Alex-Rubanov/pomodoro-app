@@ -6,9 +6,10 @@ const playBtn = document.querySelector('.play-btn');
 const resetBtn = document.querySelector('.reset-btn');
 const circleTimer = document.querySelector('.app-circle svg circle:nth-child(2)');
 
-let totalTime = 25 * 60;
-let breakTime = 5 * 60;
-let remainingTime = totalTime;
+const totalTime = 25 * 60;
+const breakTime = 5 * 60;
+let remainingSessionTime = totalTime;
+let remainingBreakTime = breakTime;
 let intervalID;
 
 // Step for circleTimeProgress and updateCircleTime()
@@ -34,20 +35,33 @@ const updateCircleTime = () => {
     circleTimer.style.strokeDashoffset = circleTimeProgress;
 };
 
-function setTime() {
-    remainingTime--; 
+const setTime = () => {
+    remainingSessionTime--; 
 
-    let sec = Math.floor(remainingTime % 60);
-    let min = Math.floor((remainingTime / 60) % 25);
+    let sec = Math.floor(remainingSessionTime % 60);
+    let min = Math.floor((remainingSessionTime / 60) % 25);
 
     updateTime(min, sec);
     updateCircleTime();
     clearTimer(); 
 }
 
+const animateCircle = (duration) => {
+    const parentNode = document.querySelector('.app-circle');
+
+    const circleAnimation = document.createElement('div');
+    circleAnimation.classList.add('app-circle--border');
+    parentNode.prepend(circleAnimation); 
+
+    setTimeout(() => {
+        circleAnimation.remove();
+    }, duration);
+};
+
 const clearTimer = () => {
-    if (remainingTime <= 0) {
+    if (remainingSessionTime <= 0) {
         clearInterval(intervalID);
+        animateCircle(10000);
 
         minutes.textContent = '00';
         seconds.textContent = '00';
@@ -69,7 +83,7 @@ const switchBtnToPause= () => {
 };
 
 resetBtn.addEventListener('click', () => {
-    remainingTime = totalTime;
+    remainingSessionTime = totalTime;
     circleTimeProgress = Math.abs(step);
 
     updateCircleTime();
@@ -79,13 +93,13 @@ resetBtn.addEventListener('click', () => {
 });
 
 playBtn.addEventListener('click', () => {
-    if (playBtn.className === 'pause-btn' && remainingTime > 0) {
+    if (playBtn.className === 'pause-btn' && remainingSessionTime > 0) {
         stopTimer();
         switchBtnToPlay();  
         return;     
     }
     
-    if (playBtn.className === 'play-btn' && remainingTime > 0) {
+    if (playBtn.className === 'play-btn' && remainingSessionTime > 0) {
         intervalID = setInterval(setTime, 10); 
         switchBtnToPause(); 
         return;

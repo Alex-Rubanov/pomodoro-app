@@ -11,7 +11,46 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 20px;
+}
+
+.app-circle {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.app-circle--border {
+    content: '';
+    position: absolute;
+    width: 105%;
+    height: 105%;
+    left: -3px;
+    top: -13px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    animation: growing 2s;
+    animation-iteration-count: 5;
+}
+
+@keyframes growing {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 10px tomato;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.2);
+    }
 }
 
 .app-circle svg {
