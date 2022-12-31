@@ -30,12 +30,13 @@
     fill: transparent;
     stroke: rgb(250, 128, 114);
     stroke-width: 10;
-    transform: translate(5px, 5px);
+    transform: translate(5px, 5px) scale(1);
 }
+
 
 .app-circle svg circle:nth-child(2) {
     stroke: rgb(158, 188, 219);
-    stroke-dasharray: 945;
+    stroke-dasharray: 943;
 }
 
 .timer {
@@ -65,6 +66,7 @@
 }
 
 .play-btn, .reset-btn, .pause-btn {
+    width: 100px;
     font-size: 25px;
     padding: 1rem 1rem;  
     border-radius: 10px;

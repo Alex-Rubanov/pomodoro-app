@@ -12,7 +12,7 @@ let remainingTime = totalTime;
 let intervalID;
 
 // Step for circleTimeProgress and updateCircleTime()
-const step = +(-945 / totalTime); 
+const step = +(-943 / totalTime); 
 let circleTimeProgress = 0; 
 
 const addZero = (number) => {
@@ -70,7 +70,7 @@ const switchBtnToPause= () => {
 
 resetBtn.addEventListener('click', () => {
     remainingTime = totalTime;
-    circleTimeProgress = 0;
+    circleTimeProgress = Math.abs(step);
 
     updateCircleTime();
     updateTime();
@@ -91,4 +91,3 @@ playBtn.addEventListener('click', () => {
         return;
     }
 });
-
