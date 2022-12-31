@@ -4,11 +4,16 @@ const minutes = document.querySelector('.timer-minutes');
 const seconds = document.querySelector('.timer-seconds');
 const playBtn = document.querySelector('.play-btn');
 const resetBtn = document.querySelector('.reset-btn');
+const circleTimer = document.querySelector('.app-circle svg circle:nth-child(2)');
 
 let totalTime = 25 * 60;
 let breakTime = 5 * 60;
 let remainingTime = totalTime;
 let intervalID;
+
+// Step for circleTimeProgress and updateCircleTime()
+const step = +(-945 / totalTime); 
+let circleTimeProgress = 0; 
 
 const addZero = (number) => {
     if (number >= 0 && number < 10) {
@@ -21,6 +26,12 @@ const addZero = (number) => {
 const updateTime = (min = 25, sec = 0) => {
     minutes.textContent = addZero(min);
     seconds.textContent = addZero(sec);     
+};  
+
+const updateCircleTime = () => {
+    circleTimeProgress += step;
+    
+    circleTimer.style.strokeDashoffset = circleTimeProgress;
 };
 
 function setTime() {
@@ -30,11 +41,9 @@ function setTime() {
     let min = Math.floor((remainingTime / 60) % 25);
 
     updateTime(min, sec);
+    updateCircleTime();
     clearTimer(); 
 }
-
-
-
 
 const clearTimer = () => {
     if (remainingTime <= 0) {
@@ -49,24 +58,37 @@ const stopTimer = () => {
     clearInterval(intervalID);
 };
 
+const switchBtnToPlay = () => {
+    playBtn.textContent = 'Play';
+    playBtn.className = 'play-btn';
+};
+
+const switchBtnToPause= () => {
+    playBtn.textContent = 'Pause';
+    playBtn.className = 'pause-btn';
+};
+
 resetBtn.addEventListener('click', () => {
     remainingTime = totalTime;
+    circleTimeProgress = 0;
 
+    updateCircleTime();
     updateTime();
     stopTimer();
+    switchBtnToPlay();
 });
 
 playBtn.addEventListener('click', () => {
-    if (playBtn.className === 'pause-btn') {
+    if (playBtn.className === 'pause-btn' && remainingTime > 0) {
         stopTimer();
-
-        playBtn.textContent = 'Play';
-        playBtn.className = 'play-btn';
-    } else {
-        intervalID = setInterval(setTime, 10); 
+        switchBtnToPlay();  
+        return;     
+    }
     
-        playBtn.textContent = 'Pause';
-        playBtn.className = 'pause-btn';
+    if (playBtn.className === 'play-btn' && remainingTime > 0) {
+        intervalID = setInterval(setTime, 10); 
+        switchBtnToPause(); 
+        return;
     }
 });
 
