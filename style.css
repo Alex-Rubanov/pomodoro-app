@@ -24,7 +24,7 @@
     position: relative;
 }
 
-.app-circle--border {
+.app-circle--border-red, .app-circle--border-green {
     content: '';
     position: absolute;
     width: 105%;
@@ -33,11 +33,16 @@
     top: -13px;
     border: 1px solid transparent;
     border-radius: 50%;
-    animation: growing 2s;
+    animation: growing-red 2s;
     animation-iteration-count: 5;
 }
 
-@keyframes growing {
+.app-circle--border-green {
+    animation: growing-green 2s;
+    animation-iteration-count: 5;
+}
+
+@keyframes growing-red {
     0% {
         opacity: 0;
         transform: scale(0.8);
@@ -46,6 +51,22 @@
         opacity: 1;
         transform: scale(1);
         box-shadow: 0 0 10px tomato;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes growing-green {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+        box-shadow: 0 0 10px rgb(107,142,35);
     }
     100% {
         opacity: 0;
