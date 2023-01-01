@@ -8,6 +8,7 @@ const minutes = document.querySelector('.timer-minutes');
 const seconds = document.querySelector('.timer-seconds');
 const playBtn = document.querySelector('.play-btn');
 const resetBtn = document.querySelector('.reset-btn');
+const circle = document.querySelector('.app-circle');
 const circleBorder = document.querySelector('.app-circle svg circle');
 const circleTimer = document.querySelector('.app-circle svg circle:nth-child(2)');
 
@@ -16,11 +17,15 @@ const breakTime = 5 * 60;
 
 let remainingSessionTime = totalTime;
 let intervalID;
-let breakID = true;
+let breakTimeID = true;
 
 // Step for circleTimeProgress and updateCircleTime()
-let step = +(SVG_STROKE_DASHOFFSET / totalTime); 
+let step = +(SVG_STROKE_DASHOFFSET / totalTime);
 let circleTimeProgress = 0; 
+
+// Color fill inside the circle
+let colorFill = 100 / totalTime;
+let colorFillProgress = 0; 
 
 const addZero = (number) => {
     if (number >= 0 && number < 10) {
@@ -30,62 +35,75 @@ const addZero = (number) => {
     }
 };
 
-const updateTime = (min = 25, sec = 0) => {
+const updateClockTime = (min = 25, sec = 0) => {
     minutes.textContent = addZero(min);
     seconds.textContent = addZero(sec);     
 };  
 
-const updateCircleTime = () => {
+const updateCircleBorderProgress = () => {
     circleTimeProgress += step;
     
     circleTimer.style.strokeDashoffset = circleTimeProgress;
 };
 
-const setTime = () => {
+const colorProgressBar = () => {
+    colorFillProgress += colorFill;
+
+    circle.style.setProperty('--height', `${colorFillProgress}%`);
+};
+
+const setClockTime = () => {
     remainingSessionTime--; 
 
     let sec = Math.floor(remainingSessionTime % 60);
     let min = Math.floor((remainingSessionTime / 60) % 25);
 
-    updateTime(min, sec);
-    updateCircleTime();
+    updateClockTime(min, sec);
+    updateCircleBorderProgress();
+    colorProgressBar();
     clearTimer(); 
 };
 
-const animateCircle = (duration) => {
+const createAnimatedCircle = (delay) => {
     const parentNode = document.querySelector('.app-circle');
-    const animationClass = breakID ? 'app-circle--border-red' : 'app-circle--border-green';
+    const animationClass = breakTimeID ? 'app-circle--border-red' : 'app-circle--border-green';
 
     const circleAnimation = document.createElement('div');
     circleAnimation.classList.add(animationClass);
     parentNode.prepend(circleAnimation); 
 
+    parentNode.style.overflow = 'visible';
+
     setTimeout(() => {
         circleAnimation.remove();
-    }, duration);
+        parentNode.style.overflow = 'hidden';
+    }, delay);
 };
 
 const switchToBreakTime = () => {
     remainingSessionTime = breakTime;
     step = +(SVG_STROKE_DASHOFFSET / breakTime);
 
+    colorFillProgress = 0;
+    colorFill = 100 / breakTime;
+
     circleBorder.style.stroke = BREAK_TIME_COLOR;
-    intervalID = setInterval(setTime, 10); 
+    intervalID = setInterval(setClockTime, 10); 
 };
 
 const clearTimer = () => {
     if (remainingSessionTime <= 0) {
         clearInterval(intervalID);
-        animateCircle(10000);
+        createAnimatedCircle(10000);
 
-        if (breakID) {  
+        if (breakTimeID) {  
             setTimeout(switchToBreakTime, 10000);
         }
 
         minutes.textContent = '00';
         seconds.textContent = '00';
 
-        breakID = !breakID;
+        breakTimeID = !breakTimeID;
     }
     return;
 };
@@ -105,13 +123,22 @@ const switchBtnToPause= () => {
 };
 
 resetBtn.addEventListener('click', () => {
+    if (!breakTimeID) {
+        breakTimeID = !breakTimeID;
+    }
+
     remainingSessionTime = totalTime;
-    step = breakID ? +(SVG_STROKE_DASHOFFSET / totalTime) : +(SVG_STROKE_DASHOFFSET / breakTime);
+    
+    step = breakTimeID ? +(SVG_STROKE_DASHOFFSET / totalTime) : +(SVG_STROKE_DASHOFFSET / breakTime);
     circleTimeProgress = Math.abs(step);
     circleBorder.style.stroke = SESSION_TIME_COLOR;
 
-    updateCircleTime();
-    updateTime();
+    colorFillProgress = 0;
+    colorFill = 100 / totalTime;
+    circle.style.setProperty('--height', 0);
+
+    updateCircleBorderProgress();
+    updateClockTime();
     stopTimer();
     switchBtnToPlay();
 });
@@ -124,7 +151,7 @@ playBtn.addEventListener('click', () => {
     }
     
     if (playBtn.className === 'play-btn' && remainingSessionTime > 0) {
-        intervalID = setInterval(setTime, 10); 
+        intervalID = setInterval(setClockTime, 10); 
         switchBtnToPause(); 
         return;
     }

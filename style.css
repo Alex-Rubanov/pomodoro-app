@@ -4,33 +4,68 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Unbounded', cursive;
+    position: relative;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: -10;
+}
+
 .app-wrapper {
     position: relative;   
-    min-height: 100vh;
+    width: 50%;
+    min-height: 60vh;
+    background-color:rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    overflow: hidden;
+    z-index: -10;
+}
+
+@media (max-width: 750px) {
+    .app-wrapper {
+        width: 95%;
+        height: 70vh;
+    }
 }
 
 .app-circle {
-    width: 300px;
-    height: 300px;
+    width: 295px;
+    height: 295px;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     position: relative;
+    overflow: hidden;
+}
+
+.app-circle:before {
+    content: '';
+    width: 100%;
+    height: var(--height, 0);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    background-color: rgb(152, 195, 207);
+    z-index: -5;
 }
 
 .app-circle--border-red, .app-circle--border-green {
     content: '';
     position: absolute;
-    width: 105%;
-    height: 105%;
-    left: -3px;
-    top: -13px;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
     border: 1px solid transparent;
     border-radius: 50%;
     animation: growing-red 2s;
@@ -45,32 +80,32 @@
 @keyframes growing-red {
     0% {
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(0.95);
     }
     50% {
         opacity: 1;
-        transform: scale(1);
-        box-shadow: 0 0 10px tomato;
+        transform: scale(1.15);
+        box-shadow: 0 0 10px rgb(250, 128, 114);
     }
     100% {
         opacity: 0;
-        transform: scale(1.2);
+        transform: scale(1.3);
     }
 }
 
 @keyframes growing-green {
     0% {
         opacity: 0;
-        transform: scale(0.8);
+        transform: scale(0.95);
     }
     50% {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1.15);
         box-shadow: 0 0 10px rgb(107,142,35);
     }
     100% {
         opacity: 0;
-        transform: scale(1.2);
+        transform: scale(1.3);
     }
 }
 
@@ -89,13 +124,13 @@
     height: 100%;
     fill: transparent;
     stroke: rgb(250, 128, 114);
-    stroke-width: 10;
+    stroke-width: 7;
     transform: translate(5px, 5px) scale(1);
 }
 
 
 .app-circle svg circle:nth-child(2) {
-    stroke: rgb(158, 188, 219);
+    stroke: rgb(152, 195, 207);
     stroke-dasharray: 943;
 }
 
@@ -108,29 +143,35 @@
 }
 
 .timer-minutes, .timer-seconds {
-    font-size: 70px;
+    font-size: 40px;
+    padding: 0.25rem;
     position: relative;
+}
+
+.timer-seconds {
+    min-width: 80px;
 }
 
 .timer-minutes:after {
     content: ":";
     position: absolute;
-    font-size: 70px;
+    font-size: 48px;
     top: -6px;
-    right: -20px;
+    right: -18px;
 }
 
 .control-btns {
     display: flex;
+    justify-content: center;
     gap: 20px;
 }
 
 .play-btn, .reset-btn, .pause-btn {
     width: 100px;
-    font-size: 25px;
+    font-size: 20px;
     padding: 1rem 1rem;  
     border-radius: 10px;
-    border: 1px solid transparent;
+    border: 1px solid rgb(152, 195, 207);
     transition: border 0.2s;
 }
 
