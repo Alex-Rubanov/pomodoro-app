@@ -1,5 +1,7 @@
 'use strict';
 
+const DEFAULT_SESSION_TIME = 25;
+const DEFAULT_BREAK_TIME = 5;
 const SESSION_TIME_COLOR = 'rgb(250, 128, 114)';
 const BREAK_TIME_COLOR = 'rgb(107,142,35)';
 const SVG_STROKE_DASHOFFSET = -912;
@@ -14,8 +16,8 @@ const breakTimeInput = document.querySelector('#break');
 
 let minutes = document.querySelector('.timer-minutes');
 let seconds = document.querySelector('.timer-seconds');
-let totalTime = 25 * 60, breakTime = 5 * 60;
-let sessionMinutes, breakMinutes;
+let sessionMinutes = DEFAULT_SESSION_TIME, breakMinutes = DEFAULT_BREAK_TIME;
+let totalTime = sessionMinutes * 60, breakTime = breakMinutes * 60;
 
 let remainingSessionTime = totalTime;
 let intervalID;
@@ -45,6 +47,24 @@ const setTime = () => {
     minutes.textContent = addZero(sessionMinutes);
 };
 
+const updateScreenTimeInfo = () => {
+    const sessionInfo = document.querySelector('.session-value');
+    const breakInfo = document.querySelector('.break-value');
+ 
+    sessionInfo.textContent = `Session time: ${sessionMinutes} min`;
+    breakInfo.textContent = `Break time: ${breakMinutes} min`;
+};
+
+const setScreenTimeInfoToDefault = () => {
+    sessionMinutes = DEFAULT_SESSION_TIME;
+    breakMinutes = DEFAULT_BREAK_TIME;
+
+    updateScreenTimeInfo(sessionMinutes);
+    updateScreenTimeInfo(breakMinutes);
+    setTime();
+    clearBorderProgressBar();
+};
+
 const setSessionMinutes = () => {
     sessionTimeInput.addEventListener('keydown', (e) => {
 
@@ -61,6 +81,7 @@ const setSessionMinutes = () => {
             sessionTimeInput.value = '';
             minutes.textContent = addZero(sessionMinutes);
 
+            updateScreenTimeInfo(sessionMinutes);
             setTime();
         }
     });
@@ -83,6 +104,8 @@ const setBreakMinutes = () => {
 
             breakMinutes = +(breakTimeInput.value);
             breakTimeInput.value = '';
+
+            updateScreenTimeInfo(breakMinutes);
         }
     });
 };
@@ -152,7 +175,7 @@ const switchToBreakTime = () => {
     colorFill = 100 / breakTime;
     circleBorder.style.stroke = BREAK_TIME_COLOR;
 
-    intervalID = setInterval(setClockTime, 10);    
+    intervalID = setInterval(setClockTime, 1000);    
 };
 
 const clearTimer = () => {
@@ -161,7 +184,7 @@ const clearTimer = () => {
         createAnimatedCircle(10000);
 
         if (breakTimeID) {  
-            setTimeout(switchToBreakTime, 10000);
+            setTimeout(switchToBreakTime, 10);
         }
 
         minutes.textContent = '00';
@@ -176,6 +199,19 @@ const stopTimer = () => {
     clearInterval(intervalID);
 };
 
+const clearBorderProgressBar = () => {
+    step = breakTimeID ? +(SVG_STROKE_DASHOFFSET / totalTime) : +(SVG_STROKE_DASHOFFSET / breakTime);
+    circleTimeProgress = Math.abs(step);
+    circleBorder.style.stroke = SESSION_TIME_COLOR;
+};
+
+const clearColorFillProgress = () => {
+    colorFillProgress = 0;
+    colorFill = 100 / totalTime;
+    circle.style.setProperty('--height', 0);
+};
+
+
 const resetTimer = () => {
     if (!breakTimeID) {
         breakTimeID = !breakTimeID;
@@ -183,14 +219,9 @@ const resetTimer = () => {
 
     remainingSessionTime = totalTime;
 
-    step = breakTimeID ? +(SVG_STROKE_DASHOFFSET / totalTime) : +(SVG_STROKE_DASHOFFSET / breakTime);
-    circleTimeProgress = Math.abs(step);
-    circleBorder.style.stroke = SESSION_TIME_COLOR;
-
-    colorFillProgress = 0;
-    colorFill = 100 / totalTime;
-    circle.style.setProperty('--height', 0);
-
+    clearBorderProgressBar();
+    clearColorFillProgress();
+    setScreenTimeInfoToDefault();
     updateCircleBorderProgress();
     updateClockTime();
     stopTimer();
