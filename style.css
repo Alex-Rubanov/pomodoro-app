@@ -12,6 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgb(240, 241, 241);
     z-index: -10;
 }
 
@@ -36,9 +37,46 @@ body {
     }
 }
 
+.settings-menu {
+    width: 100%;
+    padding: 1rem;
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.settings-menu input {
+    width: 120px;
+    padding: 0.25rem;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 5px;
+    border-bottom-color: rgb(152, 195, 207);
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.settings-menu input:focus {
+    outline: none;
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.current-values {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 0.25rem;
+    position: absolute;
+    bottom: 5px;
+}
+
 .app-circle {
-    width: 295px;
-    height: 295px;
+    width: 296px;
+    height: 296px;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -124,14 +162,14 @@ body {
     height: 100%;
     fill: transparent;
     stroke: rgb(250, 128, 114);
-    stroke-width: 7;
+    stroke-width: 10;
     transform: translate(5px, 5px) scale(1);
 }
 
 
 .app-circle svg circle:nth-child(2) {
     stroke: rgb(152, 195, 207);
-    stroke-dasharray: 943;
+    stroke-dasharray: 912;
 }
 
 .timer {
@@ -143,20 +181,20 @@ body {
 }
 
 .timer-minutes, .timer-seconds {
-    font-size: 40px;
+    font-size: 55px;
     padding: 0.25rem;
     position: relative;
 }
 
 .timer-seconds {
-    min-width: 80px;
+    min-width: 110px;
 }
 
 .timer-minutes:after {
     content: ":";
     position: absolute;
     font-size: 48px;
-    top: -6px;
+    top: 4px;
     right: -18px;
 }
 
@@ -166,7 +204,7 @@ body {
     gap: 20px;
 }
 
-.play-btn, .reset-btn, .pause-btn {
+.start-btn, .reset-btn, .pause-btn {
     width: 100px;
     font-size: 20px;
     padding: 1rem 1rem;  
@@ -175,7 +213,7 @@ body {
     transition: border 0.2s;
 }
 
-.play-btn:hover, .reset-btn:hover, .pause-btn:hover {
+.start-btn:hover, .reset-btn:hover, .pause-btn:hover {
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.5);
 }

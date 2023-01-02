@@ -2,18 +2,20 @@
 
 const SESSION_TIME_COLOR = 'rgb(250, 128, 114)';
 const BREAK_TIME_COLOR = 'rgb(107,142,35)';
-const SVG_STROKE_DASHOFFSET = -943;
+const SVG_STROKE_DASHOFFSET = -912;
 
-const minutes = document.querySelector('.timer-minutes');
-const seconds = document.querySelector('.timer-seconds');
-const playBtn = document.querySelector('.play-btn');
+const startBtn = document.querySelector('.start-btn');
 const resetBtn = document.querySelector('.reset-btn');
 const circle = document.querySelector('.app-circle');
 const circleBorder = document.querySelector('.app-circle svg circle');
 const circleTimer = document.querySelector('.app-circle svg circle:nth-child(2)');
+const sessionTimeInput = document.querySelector('#session');
+const breakTimeInput = document.querySelector('#break');
 
-const totalTime = 25 * 60;
-const breakTime = 5 * 60;
+let minutes = document.querySelector('.timer-minutes');
+let seconds = document.querySelector('.timer-seconds');
+let totalTime = 25 * 60, breakTime = 5 * 60;
+let sessionMinutes, breakMinutes;
 
 let remainingSessionTime = totalTime;
 let intervalID;
@@ -23,16 +25,76 @@ let breakTimeID = true;
 let step = +(SVG_STROKE_DASHOFFSET / totalTime);
 let circleTimeProgress = 0; 
 
-// Color fill inside the circle
+// Color fill inside the circle and it's pace
 let colorFill = 100 / totalTime;
 let colorFillProgress = 0; 
+
+const setTime = () => {
+    if (sessionMinutes) {
+        totalTime = sessionMinutes * 60;
+        remainingSessionTime = totalTime;
+
+        step = +(SVG_STROKE_DASHOFFSET / totalTime);
+        colorFill = 100 / totalTime;  
+    }
+
+    if (breakMinutes) {
+        breakTime = breakMinutes * 60;
+    }
+
+    minutes.textContent = addZero(sessionMinutes);
+};
+
+const setSessionMinutes = () => {
+    sessionTimeInput.addEventListener('keydown', (e) => {
+
+        if (e.code === 'Enter') {
+            if (startBtn.className === 'pause-btn' && remainingSessionTime === 0) {
+                colorFillProgress = 0;
+                
+                stopTimer();
+                resetTimer();
+                switchBtnToStart();      
+            }
+
+            sessionMinutes = +(sessionTimeInput.value);
+            sessionTimeInput.value = '';
+            minutes.textContent = addZero(sessionMinutes);
+
+            setTime();
+        }
+    });
+};
+
+setSessionMinutes();
+
+const setBreakMinutes = () => {
+    breakTimeInput.addEventListener('keydown', (e) => {
+
+        if (e.code === 'Enter') {
+            if (startBtn.className === 'pause-btn' && remainingSessionTime === 0) {
+                colorFillProgress = 0;
+                
+                stopTimer();
+                resetTimer();
+                setTime();
+                switchBtnToStart();      
+            }
+
+            breakMinutes = +(breakTimeInput.value);
+            breakTimeInput.value = '';
+        }
+    });
+};
+
+setBreakMinutes();
 
 const addZero = (number) => {
     if (number >= 0 && number < 10) {
        return `0${number}`;
-    } else {
-        return number;
     }
+
+    return number;  
 };
 
 const updateClockTime = (min = 25, sec = 0) => {
@@ -46,7 +108,7 @@ const updateCircleBorderProgress = () => {
     circleTimer.style.strokeDashoffset = circleTimeProgress;
 };
 
-const colorProgressBar = () => {
+const updateColorProgressBar = () => {
     colorFillProgress += colorFill;
 
     circle.style.setProperty('--height', `${colorFillProgress}%`);
@@ -60,7 +122,7 @@ const setClockTime = () => {
 
     updateClockTime(min, sec);
     updateCircleBorderProgress();
-    colorProgressBar();
+    updateColorProgressBar();
     clearTimer(); 
 };
 
@@ -81,14 +143,16 @@ const createAnimatedCircle = (delay) => {
 };
 
 const switchToBreakTime = () => {
+    setTime();
+
     remainingSessionTime = breakTime;
     step = +(SVG_STROKE_DASHOFFSET / breakTime);
 
     colorFillProgress = 0;
     colorFill = 100 / breakTime;
-
     circleBorder.style.stroke = BREAK_TIME_COLOR;
-    intervalID = setInterval(setClockTime, 10); 
+
+    intervalID = setInterval(setClockTime, 10);    
 };
 
 const clearTimer = () => {
@@ -112,23 +176,13 @@ const stopTimer = () => {
     clearInterval(intervalID);
 };
 
-const switchBtnToPlay = () => {
-    playBtn.textContent = 'Play';
-    playBtn.className = 'play-btn';
-};
-
-const switchBtnToPause= () => {
-    playBtn.textContent = 'Pause';
-    playBtn.className = 'pause-btn';
-};
-
-resetBtn.addEventListener('click', () => {
+const resetTimer = () => {
     if (!breakTimeID) {
         breakTimeID = !breakTimeID;
     }
 
     remainingSessionTime = totalTime;
-    
+
     step = breakTimeID ? +(SVG_STROKE_DASHOFFSET / totalTime) : +(SVG_STROKE_DASHOFFSET / breakTime);
     circleTimeProgress = Math.abs(step);
     circleBorder.style.stroke = SESSION_TIME_COLOR;
@@ -140,17 +194,31 @@ resetBtn.addEventListener('click', () => {
     updateCircleBorderProgress();
     updateClockTime();
     stopTimer();
-    switchBtnToPlay();
+    switchBtnToStart();
+};
+
+const switchBtnToStart = () => {
+    startBtn.textContent = 'Start';
+    startBtn.className = 'start-btn';
+};
+
+const switchBtnToPause= () => {
+    startBtn.textContent = 'Pause';
+    startBtn.className = 'pause-btn';
+};
+
+resetBtn.addEventListener('click', () => {
+    resetTimer();
 });
 
-playBtn.addEventListener('click', () => {
-    if (playBtn.className === 'pause-btn' && remainingSessionTime > 0) {
+startBtn.addEventListener('click', () => {
+    if (startBtn.className === 'pause-btn' && remainingSessionTime > 0) {
         stopTimer();
-        switchBtnToPlay();  
+        switchBtnToStart();  
         return;     
     }
     
-    if (playBtn.className === 'play-btn' && remainingSessionTime > 0) {
+    if (startBtn.className === 'start-btn' && remainingSessionTime > 0) {
         intervalID = setInterval(setClockTime, 10); 
         switchBtnToPause(); 
         return;
