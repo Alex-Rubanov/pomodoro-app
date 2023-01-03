@@ -310,7 +310,7 @@ body {
     padding-bottom: 10px;
 }
 
-.icon-music_note {
+.icon-music_note, .icon-music_off {
     position: absolute;
     top: 20px;
     right: 15px;
@@ -343,14 +343,14 @@ body {
     transition: all 0.5s ease;
 }
 
-.icon-loop {
+.icon-loop, .icon-sync_disabled {
     position: absolute;
     top: 50px;
     right: 15px;
     font-size: 25px;
 }
 
-.icon-loop {
+.icon-loop:hover {
     padding-left: 10px;
     transition: all 0.5s ease;
     cursor: pointer;
@@ -376,3 +376,11 @@ body {
     transition: all 0.5s ease;
 }
 
+.icon-sync_disabled:hover, .icon-music_off:hover {
+    cursor: pointer;
+}
+
+.disabled, .active {
+    color: rgb(250, 128, 114);
+    overflow: hidden;
+}

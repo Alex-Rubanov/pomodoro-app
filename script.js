@@ -255,3 +255,51 @@ startBtn.addEventListener('click', () => {
         return;
     }
 });
+
+const switchSoundMode = () => {
+    const soundOn = document.querySelector('.icon-music_note');
+    const soundMode = document.querySelector('[data-sound-mode]');
+
+    soundMode.addEventListener('click', () => {
+        if (soundMode.classList.contains('icon-music_off')) {
+            soundMode.className = 'icon-music_note';
+            return;
+        }
+
+        soundOn.className = 'icon-music_off';
+        soundOn.classList.toggle('disabled');
+    });
+
+    
+};
+
+switchSoundMode();
+
+const switchLoopMode = () => {
+    const loopOn = document.querySelector('.icon-loop');
+    const loopMode = document.querySelector('[data-loop-mode]');
+
+    loopMode.addEventListener('click', () => {
+        if (loopMode.classList.contains('icon-sync_disabled')) {
+            loopMode.className = 'icon-loop';
+            return;
+        }
+
+        loopOn.className = 'icon-sync_disabled';
+        loopMode.classList.toggle('disabled');
+    });
+};
+
+switchLoopMode();
+
+const switchActiveClass = () => {
+    const icons = document.querySelectorAll('[data-icon]');
+
+    icons.forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            e.target.classList.toggle('active');
+        });
+    });
+};
+
+switchActiveClass();
