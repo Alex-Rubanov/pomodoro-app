@@ -48,6 +48,8 @@ body {
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.5rem;
+    opacity: 0;
+    transition: 0.5s;
 }
 
 .settings-menu input {
@@ -272,7 +274,6 @@ body {
     transform: translateX(40px);
     padding-right: 10px;
     opacity: 1;
-    border-bottom: 1px solid #000;
     width: 50px;
     transition: all 0.5s ease;
 }
@@ -293,7 +294,6 @@ body {
 .icon-notes:hover:after {
     transform: translateX(40px);
     opacity: 1;
-    border-bottom: 1px solid #000;
     width: 45px;
     transition: all 0.5s ease;
 }
@@ -338,7 +338,6 @@ body {
 .icon-music_note:hover:after {
     transform: translateX(-25px);
     opacity: 1;
-    border-bottom: 1px solid #000;
     width: 48px;
     transition: all 0.5s ease;
 }
@@ -371,7 +370,6 @@ body {
 .icon-loop:hover:after {
     transform: translateX(-28px);
     opacity: 1;
-    border-bottom: 1px solid #000;
     width: 52px;
     transition: all 0.5s ease;
 }
@@ -382,5 +380,44 @@ body {
 
 .disabled, .active {
     color: rgb(250, 128, 114);
-    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.notes-history {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: -100%;
+    background-color:rgba(0, 0, 0, 0.5);
+    transition: 0.5s ease;
+}
+
+.show {
+    left: 0;
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+.close-btn span:first-child {
+    transform: rotate(45deg);
+    margin-bottom: -3px;
+}
+
+.close-btn span:nth-child(2) {
+    transform: rotate(-45deg);
+}
+
+.close-btn span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 5px;
+    border-radius: 5px;
 }

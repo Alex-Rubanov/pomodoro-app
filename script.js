@@ -292,14 +292,60 @@ const switchLoopMode = () => {
 
 switchLoopMode();
 
+const showSettingsMenu = (element) => {
+    const settingsMenu = document.querySelector('.settings-menu');
+
+    if (element.classList.contains('active')) {
+        settingsMenu.style.setProperty('opacity', 1);
+        return;
+    }
+
+    settingsMenu.style.setProperty('opacity', 0);  
+};
+
+const showNotes = (element) => {
+    const notes = document.querySelector('.notes-history');
+
+    if (element.classList.contains('active')) {
+        notes.classList.add('show');
+        return;
+    }
+
+    notes.classList.remove('show');
+};
+
+const hideNotes = () => {
+    const closeBtn = document.querySelector('.close-btn');
+
+    closeBtn.addEventListener('click', () => {
+        const notesHistory = document.querySelector('.notes-history');
+        const notesMenu = document.querySelector('.icon-notes');
+
+        notesHistory.classList.remove('show');
+        notesMenu.classList.remove('active');
+
+    });
+};
+
+hideNotes();
+
 const switchActiveClass = () => {
     const icons = document.querySelectorAll('[data-icon]');
 
     icons.forEach(icon => {
         icon.addEventListener('click', (e) => {
             e.target.classList.toggle('active');
+
+            if (e.target.classList.contains('icon-settings')) {
+                showSettingsMenu(icon);
+            } 
+
+            if (e.target.classList.contains('icon-notes')) {
+                showNotes(icon);
+            }
         });
     });
 };
 
 switchActiveClass();
+
