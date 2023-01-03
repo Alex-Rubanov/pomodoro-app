@@ -87,6 +87,15 @@ body {
         width: 95%;
         height: 80vh;
    }
+
+   .settings-menu {
+    flex-direction: column;
+    align-items: center;
+   }
+
+   .menu-icons {
+    font-size: 12px;
+   }
 }
 
 .app-circle {
@@ -232,3 +241,138 @@ body {
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0.5);
 }
+
+.icon-settings {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    font-size: 25px;
+}
+
+.icon-settings:hover {
+    padding-right: 10px;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+.icon-settings:after {
+    content: 'Settings';
+    opacity: 0;
+    width: 0;
+    height: 22px;
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: -10px;
+    font-size: 18px;
+
+}
+
+.icon-settings:hover:after {
+    transform: translateX(40px);
+    padding-right: 10px;
+    opacity: 1;
+    border-bottom: 1px solid #000;
+    width: 50px;
+    transition: all 0.5s ease;
+}
+
+.icon-notes {
+    position: absolute;
+    top: 50px;
+    left: 15px;
+    font-size: 25px;
+}
+
+.icon-notes:hover {
+    padding-right: 10px;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+.icon-notes:hover:after {
+    transform: translateX(40px);
+    opacity: 1;
+    border-bottom: 1px solid #000;
+    width: 45px;
+    transition: all 0.5s ease;
+}
+
+.icon-notes:after {
+    content: 'Notes';
+    width: 0;
+    height: 12px;
+    opacity: 0;
+    position: absolute;
+    top: 2px;
+    left: -10px;
+    font-size: 18px;
+    padding-bottom: 10px;
+}
+
+.icon-music_note {
+    position: absolute;
+    top: 20px;
+    right: 15px;
+    font-size: 25px;
+}
+
+.icon-music_note {
+    padding-left: 10px;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+.icon-music_note:after {
+    content: 'Sound';
+    width: 0;
+    height: 12px;
+    opacity: 0;
+    position: absolute;
+    top: 4px;
+    right: 0;
+    font-size: 18px;
+    padding-bottom: 10px;
+}
+
+.icon-music_note:hover:after {
+    transform: translateX(-25px);
+    opacity: 1;
+    border-bottom: 1px solid #000;
+    width: 48px;
+    transition: all 0.5s ease;
+}
+
+.icon-loop {
+    position: absolute;
+    top: 50px;
+    right: 15px;
+    font-size: 25px;
+}
+
+.icon-loop {
+    padding-left: 10px;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+
+.icon-loop:after {
+    content: 'Repeat';
+    width: 0;
+    height: 12px;
+    opacity: 0;
+    position: absolute;
+    top: 2px;
+    right: 0;
+    font-size: 18px;
+    padding-bottom: 10px;
+}
+
+.icon-loop:hover:after {
+    transform: translateX(-28px);
+    opacity: 1;
+    border-bottom: 1px solid #000;
+    width: 52px;
+    transition: all 0.5s ease;
+}
+

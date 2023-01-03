@@ -175,7 +175,7 @@ const switchToBreakTime = () => {
     colorFill = 100 / breakTime;
     circleBorder.style.stroke = BREAK_TIME_COLOR;
 
-    intervalID = setInterval(setClockTime, 1000);    
+    intervalID = setInterval(setClockTime, 10);    
 };
 
 const clearTimer = () => {
@@ -184,7 +184,7 @@ const clearTimer = () => {
         createAnimatedCircle(10000);
 
         if (breakTimeID) {  
-            setTimeout(switchToBreakTime, 10);
+            setTimeout(switchToBreakTime, 10000);
         }
 
         minutes.textContent = '00';
