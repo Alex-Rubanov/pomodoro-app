@@ -55,16 +55,6 @@ const updateScreenTimeInfo = () => {
     breakInfo.textContent = `Break time: ${breakMinutes} min`;
 };
 
-const setScreenTimeInfoToDefault = () => {
-    sessionMinutes = DEFAULT_SESSION_TIME;
-    breakMinutes = DEFAULT_BREAK_TIME;
-
-    updateScreenTimeInfo(sessionMinutes);
-    updateScreenTimeInfo(breakMinutes);
-    setTime();
-    clearBorderProgressBar();
-};
-
 const animateDoneIcon = (icon) => {
     icon.classList.add('done');
 
@@ -79,11 +69,21 @@ const setTimeByMouseClick = () => {
     doneIcons.forEach(icon => {
 
     icon.addEventListener('click', (e) => {
-        if (remainingSessionTime !== totalTime && remainingSessionTime > 0) {
+        if (remainingSessionTime !== totalTime && remainingSessionTime > 0 ) {
+            return;
+        }
+
+        if (circle.firstElementChild.classList.contains('app-circle--border-red') || circle.firstElementChild.classList.contains('app-circle--border-green')) {
             return;
         }
 
         if (e.target.hasAttribute('data-session')) {
+            if (remainingSessionTime == 0 || remainingSessionTime == breakMinutes) {
+                resetTimer();
+                saveBreakMinutes();
+                updateScreenTimeInfo(breakMinutes);
+            }
+
             saveSessionMinutes();
             updateScreenTimeInfo(sessionMinutes);  
             animateDoneIcon(e.target);     
@@ -171,7 +171,7 @@ const addZero = (number) => {
     return number;  
 };
 
-const updateClockTime = (min = 25, sec = 0) => {
+const updateClockTime = (min = sessionMinutes, sec = 0) => {
     minutes.textContent = addZero(min);
     seconds.textContent = addZero(sec);     
 };  
@@ -273,7 +273,6 @@ const resetTimer = () => {
 
     clearBorderProgressBar();
     clearColorFillProgress();
-    setScreenTimeInfoToDefault();
     updateCircleBorderProgress();
     updateClockTime();
     stopTimer();
