@@ -65,6 +65,53 @@ const setScreenTimeInfoToDefault = () => {
     clearBorderProgressBar();
 };
 
+const animateDoneIcon = (icon) => {
+    icon.classList.add('done');
+
+    setTimeout(() => {
+        icon.classList.remove('done');
+    }, 1000);
+};
+
+const setTimeByMouseClick = () => {
+    const doneIcons = document.querySelectorAll('.icon-done');
+
+    doneIcons.forEach(icon => {
+
+    icon.addEventListener('click', (e) => {
+        if (remainingSessionTime !== totalTime && remainingSessionTime > 0) {
+            return;
+        }
+
+        if (e.target.hasAttribute('data-session')) {
+            saveSessionMinutes();
+            updateScreenTimeInfo(sessionMinutes);  
+            animateDoneIcon(e.target);     
+            setTime();
+            return;
+        }
+
+        if (e.target.hasAttribute('data-break')) {
+            saveBreakMinutes();
+            updateScreenTimeInfo(breakMinutes);
+            animateDoneIcon(e.target);
+            return;
+        }
+    });
+    });
+
+};
+
+setTimeByMouseClick();
+
+const saveSessionMinutes = () => {
+    if (sessionTimeInput.value == false) return;
+
+    sessionMinutes = +(sessionTimeInput.value);
+    sessionTimeInput.value = '';
+    minutes.textContent = addZero(sessionMinutes);
+};
+
 const setSessionMinutes = () => {
     sessionTimeInput.addEventListener('keydown', (e) => {
 
@@ -77,9 +124,7 @@ const setSessionMinutes = () => {
                 switchBtnToStart();      
             }
 
-            sessionMinutes = +(sessionTimeInput.value);
-            sessionTimeInput.value = '';
-            minutes.textContent = addZero(sessionMinutes);
+            saveSessionMinutes();
 
             updateScreenTimeInfo(sessionMinutes);
             setTime();
@@ -88,6 +133,13 @@ const setSessionMinutes = () => {
 };
 
 setSessionMinutes();
+
+const saveBreakMinutes = () => {
+    if (breakTimeInput.value == false) return;
+
+    breakMinutes = +(breakTimeInput.value);
+    breakTimeInput.value = '';
+};
 
 const setBreakMinutes = () => {
     breakTimeInput.addEventListener('keydown', (e) => {
@@ -102,8 +154,7 @@ const setBreakMinutes = () => {
                 switchBtnToStart();      
             }
 
-            breakMinutes = +(breakTimeInput.value);
-            breakTimeInput.value = '';
+            saveBreakMinutes();
 
             updateScreenTimeInfo(breakMinutes);
         }
@@ -167,6 +218,7 @@ const createAnimatedCircle = (delay) => {
 
 const switchToBreakTime = () => {
     setTime();
+    clearTimer();
 
     remainingSessionTime = breakTime;
     step = +(SVG_STROKE_DASHOFFSET / breakTime);
@@ -181,7 +233,7 @@ const switchToBreakTime = () => {
 const clearTimer = () => {
     if (remainingSessionTime <= 0) {
         clearInterval(intervalID);
-        createAnimatedCircle(10000);
+        createAnimatedCircle(10000); 
 
         if (breakTimeID) {  
             setTimeout(switchToBreakTime, 10000);
@@ -305,9 +357,12 @@ const showSettingsMenu = (element) => {
 
 const showNotes = (element) => {
     const notes = document.querySelector('.notes-history');
+    const iconsMenu = document.querySelector('.menu-icons');
 
     if (element.classList.contains('active')) {
         notes.classList.add('show');
+        circle.classList.add('filter');
+        iconsMenu.classList.add('filter');
         return;
     }
 
@@ -316,6 +371,7 @@ const showNotes = (element) => {
 
 const hideNotes = () => {
     const closeBtn = document.querySelector('.close-btn');
+    const iconsMenu = document.querySelector('.menu-icons');
 
     closeBtn.addEventListener('click', () => {
         const notesHistory = document.querySelector('.notes-history');
@@ -323,7 +379,8 @@ const hideNotes = () => {
 
         notesHistory.classList.remove('show');
         notesMenu.classList.remove('active');
-
+        circle.classList.remove('filter');
+        iconsMenu.classList.remove('filter');
     });
 };
 

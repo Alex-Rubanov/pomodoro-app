@@ -38,7 +38,7 @@ body {
 }
 
 .settings-menu {
-    width: 100%;
+    width: 70%;
     padding: 1rem;
     position: absolute;
     top: 5px;
@@ -53,13 +53,17 @@ body {
 }
 
 .settings-menu input {
-    width: 120px;
+    width: 115px;
     padding: 0.25rem;
     border-style: solid;
     border-color: transparent;
     border-radius: 5px;
     border-bottom-color: rgb(152, 195, 207);
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+.settings-menu input:nth-child(2) {
+    width: 100px;
 }
 
 .settings-menu input:focus {
@@ -76,23 +80,23 @@ body {
     bottom: 5px;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1020px) {
     .current-values {
         flex-direction: column;
         align-items: center;
         gap: 0.5rem;
     }
+
+    .settings-menu {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 650px) {
    .app-wrapper {
         width: 95%;
         height: 80vh;
-   }
-
-   .settings-menu {
-    flex-direction: column;
-    align-items: center;
    }
 
    .menu-icons {
@@ -244,6 +248,13 @@ body {
     border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
+.menu-icons {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -10;
+}
+
 .icon-settings {
     position: absolute;
     top: 20px;
@@ -264,9 +275,9 @@ body {
     height: 22px;
     display: block;
     position: absolute;
-    top: 2px;
+    top: 4px;
     left: -10px;
-    font-size: 18px;
+    font-size: 16px;
 
 }
 
@@ -304,9 +315,9 @@ body {
     height: 12px;
     opacity: 0;
     position: absolute;
-    top: 2px;
+    top: 4px;
     left: -10px;
-    font-size: 18px;
+    font-size: 16px;
     padding-bottom: 10px;
 }
 
@@ -331,12 +342,12 @@ body {
     position: absolute;
     top: 4px;
     right: 0;
-    font-size: 18px;
+    font-size: 16px;
     padding-bottom: 10px;
 }
 
 .icon-music_note:hover:after {
-    transform: translateX(-25px);
+    transform: translateX(-20px);
     opacity: 1;
     width: 48px;
     transition: all 0.5s ease;
@@ -361,14 +372,14 @@ body {
     height: 12px;
     opacity: 0;
     position: absolute;
-    top: 2px;
+    top: 4px;
     right: 0;
-    font-size: 18px;
+    font-size: 16px;
     padding-bottom: 10px;
 }
 
 .icon-loop:hover:after {
-    transform: translateX(-28px);
+    transform: translateX(-20px);
     opacity: 1;
     width: 52px;
     transition: all 0.5s ease;
@@ -389,11 +400,16 @@ body {
     width: 100%;
     left: -100%;
     background-color:rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 1);
     transition: 0.5s ease;
 }
 
 .show {
     left: 0;
+}
+
+.filter {
+    filter: blur(4px);
 }
 
 .close-btn {
@@ -420,4 +436,64 @@ body {
     background-color: rgba(255, 255, 255, 0.9);
     margin-bottom: 5px;
     border-radius: 5px;
+}
+
+.title {
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 25px;
+}
+
+.session-history {
+    margin-top: 40px;
+    padding: 0.5rem 3rem;
+    overflow: auto;
+    max-height: 70%;
+}
+
+.session-history ul li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    position: relative;
+    margin-top: 15px;
+}
+
+.session-history ul li .session-descr {
+    margin-top: 5px;
+    color: rgb(207, 207, 136);
+    padding: 0 1rem;
+}
+
+.session-history ul li .icon-create {
+    position: absolute;
+    top: 2px;
+    right: -30px;
+    color: rgb(148, 237, 148);
+}
+
+.session-history ul li .icon-create {
+    cursor: pointer;
+}
+
+.session-date .icon-access_time {
+    display: inline-block;
+    padding-right: 0.5rem;
+}
+
+.icon-done {
+    font-size: 28px;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.done {
+    color: rgb(112, 195, 112);
+}
+
+.session-time, .break-time {
+    display: inherit;
+    gap: 5px;
 }
