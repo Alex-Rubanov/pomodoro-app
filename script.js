@@ -20,8 +20,11 @@ let sessionMinutes = DEFAULT_SESSION_TIME, breakMinutes = DEFAULT_BREAK_TIME;
 let totalTime = sessionMinutes * 60, breakTime = breakMinutes * 60;
 
 let remainingSessionTime = totalTime;
+
 let intervalID;
 let breakTimeID = true;
+let repeatMode = true;
+let soundMode = true;
 let sessionCounter = 1;
 
 // Step for circleTimeProgress and updateCircleTime()
@@ -240,13 +243,14 @@ const switchToBreakTime = () => {
 };
 
 const clearTimer = () => {
+
     if (remainingSessionTime <= 0) {
-        play();
+        // play();
         clearInterval(intervalID);
         createAnimatedCircle(10000); 
 
         if (breakTimeID) {  
-            play();
+            // play();
             setTimeout(switchToBreakTime, 10000);
             
             addSessionNote();
@@ -254,13 +258,17 @@ const clearTimer = () => {
             saveComment();
         }
 
+        repeatModeOn();
+
         minutes.textContent = '00';
         seconds.textContent = '00';
 
         breakTimeID = !breakTimeID;
 
-        countSessions();     
+        countSessions();   
+
     }
+
     return;
 };
 
@@ -305,6 +313,26 @@ const switchBtnToPause= () => {
     startBtn.textContent = 'Pause';
     startBtn.className = 'pause-btn';
 };
+
+const repeatModeOn = () => {
+    if (!breakTimeID && repeatMode) {
+        setTimeout(() => {
+            resetTimer();
+            intervalID = setInterval(setClockTime, 10); 
+            switchBtnToPause(); 
+        }, 10010);
+    }
+};
+
+const repeatModeOff = () => {
+    const switchMode = document.querySelector('[data-loop-mode]');
+
+    switchMode.addEventListener('click', () => {
+        repeatMode = !repeatMode;
+    });
+};
+
+repeatModeOff();
 
 resetBtn.addEventListener('click', () => {
     resetTimer();
@@ -403,10 +431,24 @@ closeSessionHistory();
 const closeCommentEditing = () => {
     const commentBox = document.querySelector('.note-comment');
     const notesList = document.querySelector('.session-history'); 
+    const notesHistory = document.querySelector('.notes-history');
 
     commentBox.classList.remove('note-comment--show');
     commentBox.value = '';
     notesList.classList.remove('filter');
+
+    if (commentBox.classList.contains('note-comment--show')) {
+        window.addEventListener('click', (e) => {
+
+            if (e.target !== commentBox) {
+                console.log(e.target);
+                commentBox.classList.remove('note-comment--show');
+                commentBox.value = '';
+                notesList.classList.remove('filter');
+            }
+
+        });
+    } 
 };
 
 const showNotes = (element) => {
@@ -521,14 +563,16 @@ const editComment = () => {
     const editIcons = document.querySelectorAll('[data-create-note]');
 
     editIcons.forEach(icon => {
-        icon.addEventListener('click', (e) => {
+        icon.addEventListener('click', () => {
             const commentBox = document.querySelector('.note-comment');
             const notesList = document.querySelector('.session-history');
 
             commentBox.classList.add('note-comment--show');
-            notesList.classList.add('filter');
+            notesList.classList.add('filter'); 
         });
     });
+
+    
 };
 
 const saveComment = () => {
@@ -552,17 +596,28 @@ const saveComment = () => {
 
 
 const deleteComment = () => {
-    const comment = document.querySelector('.session-descr');
-    const deleteIcon = document.querySelector('.icon-highlight_remove');
+    const comments = document.querySelectorAll('.session-descr');
+    const deleteIcons = document.querySelectorAll('.icon-highlight_remove');
+    const sessionNumbers = document.querySelectorAll('.session-number');
 
-    deleteIcon.addEventListener('click', () => {
-        comment.textContent = '';
-        deleteIcon.style.setProperty('opacity', 0);
+    deleteIcons.forEach((icon, index) => {
+        icon.addEventListener('click', (e) => {
+            comments[index].textContent = '';
+            icon.style.setProperty('opacity', 0);
+        });
+    
+        // if (comments[index].textContent != false) {
+        //     deleteIcons[index].style.setProperty('opacity', 1);
+        //     return;
+        // }
     });
 
-    if (comment.textContent != false) {
-        deleteIcon.style.setProperty('opacity', 1);
-        return;
-    }
+    comments.forEach((comment, index) => {
+        comment.addEventListener('click', () => {
+            if (comment.textContent == false) {
+                deleteIcons[index].style.setProperty('opacity', 0);
+            }
+        });
+    });
 };
 

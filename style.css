@@ -573,4 +573,11 @@ body {
     .notes-history .comments .note-comment, .note-comment:focus {
         width: 250px;
     }
+
+    .icon-settings:hover:after,
+    .icon-notes:hover:after,
+    .icon-music_note:hover:after,
+    .icon-loop:hover:after {
+        pointer-events: none;
+    }
 }
