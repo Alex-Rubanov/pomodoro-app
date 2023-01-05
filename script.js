@@ -241,12 +241,17 @@ const switchToBreakTime = () => {
 
 const clearTimer = () => {
     if (remainingSessionTime <= 0) {
+        play();
         clearInterval(intervalID);
         createAnimatedCircle(10000); 
 
         if (breakTimeID) {  
+            play();
             setTimeout(switchToBreakTime, 10000);
+            
             addSessionNote();
+            editComment();
+            saveComment();
         }
 
         minutes.textContent = '00';
@@ -254,7 +259,7 @@ const clearTimer = () => {
 
         breakTimeID = !breakTimeID;
 
-        countSessions(); 
+        countSessions();     
     }
     return;
 };
@@ -448,7 +453,7 @@ const addSessionNote = () => {
         <div class="session-date"><span class="icon-access_time"></span>${dateBuilder()}</div>
         <div class="session-number">Session ${sessionCounter}</div>
         <div class="session-descr">You can add/delete your comments</div>
-        <span class="icon-create"></span>
+        <span data-create-note class="icon-create"></span>
         <span class="icon-highlight_remove"></span>
     </li>
         `;
@@ -456,5 +461,37 @@ const addSessionNote = () => {
 
         index++;
     }
+};
+
+const play = () => {
+    const audio = new Audio('/sound/flute.mp3');
+    audio.play();
+};
+
+const editComment = () => {
+    const editIcons = document.querySelectorAll('[data-create-note]');
+
+    editIcons.forEach(icon => {
+        icon.addEventListener('click', (e) => {
+            const commentBox = document.querySelector('.note-comment');
+
+            commentBox.classList.add('note-comment--show');
+        });
+    });
+};
+
+const saveComment = () => {
+    const commentBox = document.querySelector('.note-comment');
+
+    commentBox.addEventListener('keydown', (e) => {
+        if (e.code === 'Enter') {
+            const comment = document.querySelector('.session-descr');
+            const text = commentBox.value;
+
+            comment.textContent = text;
+            commentBox.value = '';
+            commentBox.classList.remove('note-comment--show');
+        }
+    });
 };
 

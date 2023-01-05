@@ -485,6 +485,29 @@ body {
     cursor: pointer;
 }
 
+.notes-history .comments .note-comment, .note-comment:focus {
+    display: block;
+    min-height: 40px;
+    width: 300px;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border-color: transparent;
+    font-size: 18px;
+    outline: none;
+    margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: 0.5s ease;
+}
+
+.notes-history .comments .note-comment--show {
+    opacity: 1;
+    top: 150px;
+}
+
 .session-date .icon-access_time {
     display: inline-block;
     padding-right: 0.5rem;
