@@ -371,6 +371,44 @@ const showSettingsMenu = (element) => {
     settingsMenu.style.setProperty('opacity', 0);  
 };
 
+const closeSessionHistory = () => {
+    const iconsMenu = document.querySelector('.menu-icons');
+
+    window.addEventListener('keydown', (e) => {
+        const commentBox = document.querySelector('.note-comment');
+
+        if (e.code === 'Escape') {
+
+            if (commentBox.classList.contains('note-comment--show')) {
+                console.log('comment');
+                closeCommentEditing();
+                return;
+            } 
+
+            const notesHistory = document.querySelector('.notes-history');
+            const notesMenu = document.querySelector('.icon-notes');
+
+            notesHistory.classList.remove('show');
+            notesMenu.classList.remove('active');
+            circle.classList.remove('filter');
+            iconsMenu.classList.remove('filter');
+        }
+
+        return;
+    });
+};
+
+closeSessionHistory();   
+
+const closeCommentEditing = () => {
+    const commentBox = document.querySelector('.note-comment');
+    const notesList = document.querySelector('.session-history'); 
+
+    commentBox.classList.remove('note-comment--show');
+    commentBox.value = '';
+    notesList.classList.remove('filter');
+};
+
 const showNotes = (element) => {
     const notes = document.querySelector('.notes-history');
     const iconsMenu = document.querySelector('.menu-icons');
@@ -379,24 +417,33 @@ const showNotes = (element) => {
         notes.classList.add('show');
         circle.classList.add('filter');
         iconsMenu.classList.add('filter');
+ 
         return;
     }
 
     notes.classList.remove('show');
 };
 
+
 const hideNotes = () => {
     const closeBtn = document.querySelector('.close-btn');
     const iconsMenu = document.querySelector('.menu-icons');
 
     closeBtn.addEventListener('click', () => {
+        const commentBox = document.querySelector('.note-comment');
+
+        if (commentBox.classList.contains('note-comment--show')) {
+            closeCommentEditing();
+            return;
+        }
+
         const notesHistory = document.querySelector('.notes-history');
         const notesMenu = document.querySelector('.icon-notes');
 
         notesHistory.classList.remove('show');
         notesMenu.classList.remove('active');
         circle.classList.remove('filter');
-        iconsMenu.classList.remove('filter');
+        iconsMenu.classList.remove('filter');  
     });
 };
 
@@ -461,6 +508,8 @@ const addSessionNote = () => {
 
         index++;
     }
+
+    deleteComment();
 };
 
 const play = () => {
@@ -474,14 +523,17 @@ const editComment = () => {
     editIcons.forEach(icon => {
         icon.addEventListener('click', (e) => {
             const commentBox = document.querySelector('.note-comment');
+            const notesList = document.querySelector('.session-history');
 
             commentBox.classList.add('note-comment--show');
+            notesList.classList.add('filter');
         });
     });
 };
 
 const saveComment = () => {
     const commentBox = document.querySelector('.note-comment');
+    const notesList = document.querySelector('.session-history');
 
     commentBox.addEventListener('keydown', (e) => {
         if (e.code === 'Enter') {
@@ -491,7 +543,26 @@ const saveComment = () => {
             comment.textContent = text;
             commentBox.value = '';
             commentBox.classList.remove('note-comment--show');
+            notesList.classList.remove('filter');
+
+            deleteComment();
         }
     });
+};
+
+
+const deleteComment = () => {
+    const comment = document.querySelector('.session-descr');
+    const deleteIcon = document.querySelector('.icon-highlight_remove');
+
+    deleteIcon.addEventListener('click', () => {
+        comment.textContent = '';
+        deleteIcon.style.setProperty('opacity', 0);
+    });
+
+    if (comment.textContent != false) {
+        deleteIcon.style.setProperty('opacity', 1);
+        return;
+    }
 };
 

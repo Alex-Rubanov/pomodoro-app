@@ -30,13 +30,6 @@ body {
     z-index: -10;
 }
 
-@media (max-width: 750px) {
-    .app-wrapper {
-        width: 65%;
-        height: 70vh;
-    }
-}
-
 .settings-menu {
     width: 70%;
     padding: 1rem;
@@ -78,30 +71,6 @@ body {
     padding: 0.25rem;
     position: absolute;
     bottom: 5px;
-}
-
-@media (max-width: 1020px) {
-    .current-values {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .settings-menu {
-        flex-direction: column;
-        align-items: center;
-    }
-}
-
-@media (max-width: 650px) {
-   .app-wrapper {
-        width: 95%;
-        height: 80vh;
-   }
-
-   .menu-icons {
-    font-size: 12px;
-   }
 }
 
 .app-circle {
@@ -453,12 +422,15 @@ body {
 }
 
 .session-history ul li {
+    min-height: 50px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    flex-basis: 1;
     align-items: baseline;
     position: relative;
     margin-top: 15px;
+    transition: all 0.5s ease;
 }
 
 .session-history ul li .session-descr {
@@ -526,4 +498,79 @@ body {
 .session-time, .break-time {
     display: inherit;
     gap: 5px;
+}
+
+
+
+
+
+
+
+@media (max-width: 1020px) {
+    .current-values {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .settings-menu {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 900px) {
+    .session-history ul li {
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: flex-start;
+        align-items: baseline;
+    }
+}
+
+@media (max-width: 700px) {
+   .app-wrapper {
+        width: 95%;
+        height: 80vh;
+   }
+
+   .menu-icons {
+    font-size: 12px;
+   }
+
+   .session-history ul li {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    }
+}
+
+@media (max-width: 450px) {
+    .session-history {
+        padding-left: 10px;
+    }
+
+    .session-history ul li {
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: flex-start;
+        align-items: baseline;
+        font-size: 16px;
+    }
+
+    .session-history ul li .session-descr {
+        padding: 0;
+    }
+
+    .notes-history .title {
+        margin-top: 10px;
+        font-size: 20px;
+    }
+
+    .notes-history .comments .note-comment, .note-comment:focus {
+        width: 250px;
+    }
 }
