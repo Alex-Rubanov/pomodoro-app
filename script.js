@@ -22,6 +22,7 @@ let totalTime = sessionMinutes * 60, breakTime = breakMinutes * 60;
 let remainingSessionTime = totalTime;
 let intervalID;
 let breakTimeID = true;
+let sessionCounter = 1;
 
 // Step for circleTimeProgress and updateCircleTime()
 let step = +(SVG_STROKE_DASHOFFSET / totalTime);
@@ -47,6 +48,12 @@ const setTime = () => {
     minutes.textContent = addZero(sessionMinutes);
 };
 
+const countSessions = () => {
+    if (remainingSessionTime == 0 && !breakTimeID) {
+        sessionCounter++;
+    }
+};
+
 const updateScreenTimeInfo = () => {
     const sessionInfo = document.querySelector('.session-value');
     const breakInfo = document.querySelector('.break-value');
@@ -54,6 +61,8 @@ const updateScreenTimeInfo = () => {
     sessionInfo.textContent = `Session time: ${sessionMinutes} min`;
     breakInfo.textContent = `Break time: ${breakMinutes} min`;
 };
+
+updateScreenTimeInfo();
 
 const animateDoneIcon = (icon) => {
     icon.classList.add('done');
@@ -237,12 +246,15 @@ const clearTimer = () => {
 
         if (breakTimeID) {  
             setTimeout(switchToBreakTime, 10000);
+            addSessionNote();
         }
 
         minutes.textContent = '00';
         seconds.textContent = '00';
 
         breakTimeID = !breakTimeID;
+
+        countSessions(); 
     }
     return;
 };
@@ -404,4 +416,45 @@ const switchActiveClass = () => {
 };
 
 switchActiveClass();
+
+const dateBuilder = () => {
+    const now = new Date();
+
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    const date = now.getDate();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+    let hour = now.getHours();
+    let minutes = now.getMinutes();
+
+    return `
+    ${date} 
+    ${months[month]} 
+    ${year}  
+    ${addZero(hour)}:
+    ${addZero(minutes)}
+    `;
+};
+
+const addSessionNote = () => {
+    const parentNode = document.querySelector('.session-history ul');
+    let index = sessionCounter - 1;
+
+    while (index < sessionCounter) {
+        const div = document.createElement('div');
+        div.innerHTML = `
+        <li>
+        <div class="session-date"><span class="icon-access_time"></span>${dateBuilder()}</div>
+        <div class="session-number">Session ${sessionCounter}</div>
+        <div class="session-descr">You can add/delete your comments</div>
+        <span class="icon-create"></span>
+        <span class="icon-highlight_remove"></span>
+    </li>
+        `;
+        parentNode.append(div);
+
+        index++;
+    }
+};
 

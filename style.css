@@ -474,7 +474,14 @@ body {
     color: rgb(148, 237, 148);
 }
 
-.session-history ul li .icon-create {
+.session-history ul li .icon-highlight_remove {
+    position: absolute;
+    top: 25px;
+    right: -30px;
+    color:rgb(250, 128, 114)
+}
+
+.session-history ul li .icon-create, .icon-highlight_remove {
     cursor: pointer;
 }
 
