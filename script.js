@@ -245,12 +245,14 @@ const switchToBreakTime = () => {
 const clearTimer = () => {
 
     if (remainingSessionTime <= 0) {
-        // play();
+        soundOnMode();
+
         clearInterval(intervalID);
         createAnimatedCircle(10000); 
 
         if (breakTimeID) {  
-            // play();
+            soundOnMode();
+
             setTimeout(switchToBreakTime, 10000);
             
             addSessionNote();
@@ -554,10 +556,21 @@ const addSessionNote = () => {
     deleteComment();
 };
 
-const play = () => {
+const soundOnMode = () => {
     const audio = new Audio('/sound/flute.mp3');
-    audio.play();
+    
+    if (soundMode) audio.play();
 };
+
+const soundOffMode = () => {
+    const sound = document.querySelector('[data-sound-mode]');
+
+    sound.addEventListener('click', () => {
+        soundMode = !soundMode;
+    });
+};
+
+soundOffMode();
 
 const editComment = () => {
     const editIcons = document.querySelectorAll('[data-create-note]');
