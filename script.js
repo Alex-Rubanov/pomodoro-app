@@ -256,8 +256,8 @@ const clearTimer = () => {
             setTimeout(switchToBreakTime, 10000);
             
             addSessionNote();
-            editComment();
-            saveComment();
+            // editComment();
+            // saveComment();
         }
 
         repeatModeOn();
@@ -538,27 +538,23 @@ const addSessionNote = () => {
     let index = sessionCounter - 1;
 
     while (index < sessionCounter) {
-        const div = document.createElement('div');
-        div.innerHTML = `
-        <li>
-        <div class="session-date"><span class="icon-access_time"></span>${dateBuilder()}</div>
-        <div class="session-number">Session ${sessionCounter}</div>
-        <div class="session-descr">You can add/delete your comments</div>
-        <span data-create-note class="icon-create"></span>
-        <span class="icon-highlight_remove"></span>
-    </li>
+        const li= document.createElement('li');
+        li.innerHTML = `
+            <div class="session-date"><span class="icon-access_time"></span>${dateBuilder()}</div>
+            <div class="session-number">Session ${sessionCounter}</div>
+            <div data-comment="${index}" class="session-descr">You can add/delete your comments</div>
+            <span data-create-note="${index}" class="icon-create"></span>
+            <span data-remove-note="${index}" class="icon-highlight_remove"></span>
         `;
-        parentNode.append(div);
+        parentNode.append(li);
 
         index++;
     }
-
-    deleteComment();
 };
 
 const soundOnMode = () => {
     const audio = new Audio('/sound/flute.mp3');
-    
+
     if (soundMode) audio.play();
 };
 
@@ -572,65 +568,70 @@ const soundOffMode = () => {
 
 soundOffMode();
 
-const editComment = () => {
-    const editIcons = document.querySelectorAll('[data-create-note]');
+// Edit/save/delete notes/comments
 
-    editIcons.forEach(icon => {
-        icon.addEventListener('click', () => {
-            const commentBox = document.querySelector('.note-comment');
-            const notesList = document.querySelector('.session-history');
-
-            commentBox.classList.add('note-comment--show');
-            notesList.classList.add('filter'); 
-        });
-    });
-
-    
-};
+let index = 0;
 
 const saveComment = () => {
     const commentBox = document.querySelector('.note-comment');
     const notesList = document.querySelector('.session-history');
-
+    
     commentBox.addEventListener('keydown', (e) => {
-        if (e.code === 'Enter') {
-            const comment = document.querySelector('.session-descr');
-            const text = commentBox.value;
 
-            comment.textContent = text;
+        if (e.code === 'Enter') {
+            const deleteIcons = document.querySelectorAll('.icon-highlight_remove');
+            const comments = document.querySelectorAll(`[data-comment]`);
+
+            const text = commentBox.value;
+            [...comments][index].textContent = text;
+
             commentBox.value = '';
             commentBox.classList.remove('note-comment--show');
             notesList.classList.remove('filter');
 
-            deleteComment();
+            if ([...comments][index].textContent != false) {
+                [...deleteIcons][index].style.setProperty('opacity', 1);
+            }          
         }
+
     });
 };
 
+const editComment = () => {
+    const sessionHistory = document.querySelector('.session-history');
+    
+    sessionHistory.addEventListener('click', (e) => {
+        if (e.target && e.target.className === 'icon-create') {
+            index = Number(e.target.dataset.createNote);
+
+            const commentBox = document.querySelector('.note-comment');
+            const notesList = document.querySelector('.session-history');
+
+            commentBox.classList.add('note-comment--show');
+            notesList.classList.add('filter');  
+        }
+    });   
+};
 
 const deleteComment = () => {
-    const comments = document.querySelectorAll('.session-descr');
-    const deleteIcons = document.querySelectorAll('.icon-highlight_remove');
-    const sessionNumbers = document.querySelectorAll('.session-number');
+    const deleteIcons = document.querySelectorAll('[data-remove-note]');
+    const sessionHistory = document.querySelector('.session-history');
 
-    deleteIcons.forEach((icon, index) => {
-        icon.addEventListener('click', (e) => {
-            comments[index].textContent = '';
-            icon.style.setProperty('opacity', 0);
-        });
-    
-        // if (comments[index].textContent != false) {
-        //     deleteIcons[index].style.setProperty('opacity', 1);
-        //     return;
-        // }
+    sessionHistory.addEventListener('click', (e) => {
+        const comments = document.querySelectorAll(`[data-comment]`);
+
+        if (e.target && e.target.className === 'icon-highlight_remove') {
+
+            index = e.target.dataset.removeNote;
+
+            [...comments][index].textContent = '';
+            e.target.style.setProperty('opacity', 0);
+
+        }
     });
 
-    comments.forEach((comment, index) => {
-        comment.addEventListener('click', () => {
-            if (comment.textContent == false) {
-                deleteIcons[index].style.setProperty('opacity', 0);
-            }
-        });
-    });
 };
 
+editComment();
+saveComment();
+deleteComment();
