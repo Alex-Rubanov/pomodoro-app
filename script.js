@@ -256,8 +256,6 @@ const clearTimer = () => {
             setTimeout(switchToBreakTime, 10000);
             
             addSessionNote();
-            // editComment();
-            // saveComment();
         }
 
         repeatModeOn();
@@ -268,7 +266,6 @@ const clearTimer = () => {
         breakTimeID = !breakTimeID;
 
         countSessions();   
-
     }
 
     return;
@@ -366,9 +363,7 @@ const switchSoundMode = () => {
 
         soundOn.className = 'icon-music_off';
         soundOn.classList.toggle('disabled');
-    });
-
-    
+    });   
 };
 
 switchSoundMode();
@@ -524,13 +519,7 @@ const dateBuilder = () => {
     let hour = now.getHours();
     let minutes = now.getMinutes();
 
-    return `
-    ${date} 
-    ${months[month]} 
-    ${year}  
-    ${addZero(hour)}:
-    ${addZero(minutes)}
-    `;
+    return `${date} ${months[month]} ${year} ${addZero(hour)}:${addZero(minutes)}`;
 };
 
 const addSessionNote = () => {
@@ -542,7 +531,7 @@ const addSessionNote = () => {
         li.innerHTML = `
             <div class="session-date"><span class="icon-access_time"></span>${dateBuilder()}</div>
             <div class="session-number">Session ${sessionCounter}</div>
-            <div data-comment="${index}" class="session-descr">You can add/delete your comments</div>
+            <div data-comment="${index}" class="session-descr">You can add or delete your comment</div>
             <span data-create-note="${index}" class="icon-create"></span>
             <span data-remove-note="${index}" class="icon-highlight_remove"></span>
         `;
@@ -553,7 +542,7 @@ const addSessionNote = () => {
 };
 
 const soundOnMode = () => {
-    const audio = new Audio('/sound/flute.mp3');
+    const audio = new Audio('/sound/alarm.mp3');
 
     if (soundMode) audio.play();
 };
@@ -608,13 +597,12 @@ const editComment = () => {
             const notesList = document.querySelector('.session-history');
 
             commentBox.classList.add('note-comment--show');
-            notesList.classList.add('filter');  
+            notesList.classList.add('filter');        
         }
     });   
 };
 
 const deleteComment = () => {
-    const deleteIcons = document.querySelectorAll('[data-remove-note]');
     const sessionHistory = document.querySelector('.session-history');
 
     sessionHistory.addEventListener('click', (e) => {
@@ -630,6 +618,25 @@ const deleteComment = () => {
         }
     });
 
+};
+
+const closeInputBox = () => {
+    const sessionHistory = document.querySelector('.session-history');
+    const commentBox = document.querySelector('.note-comment');
+    const notesList = document.querySelector('.session-history');
+
+    if (commentBox.classList.contains('note-comment--show')) {
+
+        window.addEventListener('click', (e) => {
+
+            // if (!e.target.classList.contains('note-comment--show')) {
+            //     commentBox.classList.remove('note-comment--show');
+            //     notesList.classList.remove('filter');
+            // }
+
+            console.dir(e.target);
+        });
+    }
 };
 
 editComment();
