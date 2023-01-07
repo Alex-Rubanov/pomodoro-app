@@ -582,24 +582,30 @@ const saveComment = () => {
                 [...deleteIcons][index].style.setProperty('opacity', 1);
             }          
         }
-
     });
 };
 
 const editComment = () => {
     const sessionHistory = document.querySelector('.session-history');
-    
+    const commentBox = document.querySelector('.note-comment');
+    const notesList = document.querySelector('.session-history');
+
     sessionHistory.addEventListener('click', (e) => {
+
+        if (commentBox.classList.contains('note-comment--show') && !e.target.classList.contains('note-comment-show')) {
+            commentBox.value = '';
+            commentBox.classList.remove('note-comment--show');
+            notesList.classList.remove('filter');
+        }
+
         if (e.target && e.target.className === 'icon-create') {
             index = Number(e.target.dataset.createNote);
 
-            const commentBox = document.querySelector('.note-comment');
-            const notesList = document.querySelector('.session-history');
-
             commentBox.classList.add('note-comment--show');
-            notesList.classList.add('filter');        
+            notesList.classList.add('filter');   
         }
-    });   
+
+    });
 };
 
 const deleteComment = () => {
@@ -620,25 +626,74 @@ const deleteComment = () => {
 
 };
 
-const closeInputBox = () => {
-    const sessionHistory = document.querySelector('.session-history');
-    const commentBox = document.querySelector('.note-comment');
-    const notesList = document.querySelector('.session-history');
-
-    if (commentBox.classList.contains('note-comment--show')) {
-
-        window.addEventListener('click', (e) => {
-
-            // if (!e.target.classList.contains('note-comment--show')) {
-            //     commentBox.classList.remove('note-comment--show');
-            //     notesList.classList.remove('filter');
-            // }
-
-            console.dir(e.target);
-        });
-    }
-};
-
 editComment();
 saveComment();
 deleteComment();
+
+const closeByMouseClick = (input, container) => {
+
+    new Promise(function(resolve) {
+        const id = setTimeout(() => {
+            if (input.classList.contains('user-input--show')) {
+    
+                container.addEventListener('click', (e) => {
+                    console.log('hello');
+                    if (!e.target.classList.contains('user-input--show')) {
+                        input.classList.remove('user-input--show');
+                    }
+                }); 
+                
+                resolve(id);
+            }
+        }, 10);
+    })
+    .then((id) => {
+        clearInterval(id);
+        container.removeEventListener('click', (e) => {
+            console.log('hello');
+            if (!e.target.classList.contains('user-input--show')) {
+                input.classList.remove('user-input--show');
+            }
+        });
+    });
+    
+};
+
+const createUserName = () => {
+    const user = document.querySelector('.icon-location_history');
+    const userNameInput = document.querySelector('.user-name');
+    const title = document.querySelector('.title');
+    const notesHistory = document.querySelector('.notes-history');
+
+    user.addEventListener('click', () => {
+        title.classList.toggle('hide');
+        userNameInput.classList.toggle('user-input--show');
+        
+        if (title.classList.contains('hide')) {
+            userNameInput.focus();
+        }
+
+        userNameInput.value = '';
+    });  
+};
+
+createUserName();
+
+const saveUserName = () => {
+    const title = document.querySelector('.title');
+    const userNameInput = document.querySelector('.user-name');
+    const accountName = document.querySelector('.account-name');
+
+    userNameInput.addEventListener('keydown', (e) => {
+        if (e.code === 'Enter') {
+            const name = userNameInput.value;
+            accountName.textContent = name;
+
+            userNameInput.value = '';
+            userNameInput.classList.remove('user-input--show');
+            title.classList.remove('hide');
+        }
+    });
+};
+
+saveUserName();

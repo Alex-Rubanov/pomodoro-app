@@ -377,14 +377,6 @@ body {
     transition: 0.5s ease;
 }
 
-.show {
-    left: 0;
-}
-
-.filter {
-    filter: blur(4px);
-}
-
 .close-btn {
     position: absolute;
     top: 5px;
@@ -416,13 +408,15 @@ body {
     text-align: center;
     margin-top: 5px;
     font-size: 25px;
+    transition: 0.3s;
 }
 
 .session-history {
-    margin-top: 40px;
+    margin-top: 60px;
     padding: 0.5rem 3rem 0.5rem 0.5rem;
     overflow: auto;
-    max-height: 70%;
+    height: 70%;
+    position: relative;
 }
 
 .session-history ul li {
@@ -501,6 +495,72 @@ body {
     padding-right: 0.5rem;
 }
 
+.user-info {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    position: absolute;
+    top: 7px;
+    right: 15px;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-location_history {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.user-info .icon-location_history:before {
+    position: absolute;
+    top: -9px;
+    right: -17px;
+    overflow: hidden;
+    transition: 0.3s ease;
+}
+
+.user-info .icon-location_history:hover:before {
+    color: rgb(112, 195, 112);
+}
+
+.user-info .user-name, .user-name:focus {
+    width: 0;
+    height: 36px;
+    border-color: transparent;
+    background-color: transparent;
+    outline: none;
+    visibility: hidden;
+}
+
+.user-info .user-input--show {
+    visibility: visible;
+    position: absolute;
+    right: 40px;
+    width: 80px;
+    height: 36px;
+    border: 0.5px solid #fff;
+    border-color: transparent;
+    border-bottom: 0.5px solid #fff;
+    background-color: transparent;
+    outline: none;
+    padding-right: 5px;
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9)
+}
+
+.user-info .account-name {
+    position: absolute;
+    top: 40px;
+    right: 2px;
+    font-size: 15px;
+    transition: 0.5s;
+}
+
 .icon-done {
     font-size: 28px;
     transition: 0.3s ease;
@@ -516,7 +576,17 @@ body {
     gap: 5px;
 }
 
+.show {
+    left: 0;
+}
 
+.filter {
+    filter: blur(4px);
+}
+
+.hide {
+    opacity: 0;
+}
 
 
 
@@ -554,27 +624,32 @@ body {
     font-size: 12px;
    }
 
+   .session-history ul li {
+    gap: 0.5rem;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, auto);
+    grid-template-areas:
+    "date date"
+    "number number"
+    "description description";
+    font-size: 15px;
+}
+
+   .session-history ul li .session-descr {
+    padding-left: 0;
+}
+
+.session-history ul li .session-number {
+    justify-self: start;
+}
+
 }
 
 @media (max-width: 450px) {
     .session-history {
+        margin-top: 40px;
         padding-left: 10px;
         padding-right: 2.5rem;
-    }
-
-    .session-history ul li {
-        gap: 0.5rem;
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(3, auto);
-        grid-template-areas:
-        "date date"
-        "number number"
-        "description description";
-        font-size: 16px;
-    }
-
-    .session-history ul li .session-number {
-        justify-self: start;
     }
 
     .session-history ul li .session-descr {
@@ -593,9 +668,68 @@ body {
     .close-btn {
         position: absolute;
         top: 5px;
-        left: 86%;
-        padding: 1rem;
+        left: 88%;
+        padding: 1rem 0 1rem 0.5rem;
         cursor: pointer;
+        z-index: 10;
+    }
+
+    .user-info {
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        position: absolute;
+        top: 7px;
+        left: 10px;
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .user-info .icon-location_history:before {
+        position: absolute;
+        top: -9px;
+        left: -17px;
+        overflow: hidden;
+        transition: 0.3s ease;
+    }
+
+    .user-info .icon-location_history:hover:before {
+        color: rgb(112, 195, 112);
+    }
+
+    .user-info .user-name, .user-name:focus {
+        width: 0;
+        height: 36px;
+        border-color: transparent;
+        background-color: transparent;
+        outline: none;
+        visibility: hidden;
+    }
+
+    .user-info .user-input--show {
+        visibility: visible;
+        position: absolute;
+        left: 40px;
+        width: 80px;
+        height: 36px;
+        border: 0.5px solid #fff;
+        border-color: transparent;
+        border-bottom: 0.5px solid #fff;
+        background-color: transparent;
+        outline: none;
+        padding-left: 5px;
+        font-size: 18px;
+        color: rgba(255, 255, 255, 0.9)
+    }
+
+    .user-info .account-name {
+        position: absolute;
+        top: 40px;
+        left: 2px;
+        font-size: 15px;
+        transition: 0.5s;
     }
 
     .icon-settings:hover:after,
