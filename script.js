@@ -5,6 +5,10 @@ const DEFAULT_BREAK_TIME = 5;
 const SESSION_TIME_COLOR = 'rgb(250, 128, 114)';
 const BREAK_TIME_COLOR = 'rgb(107,142,35)';
 const SVG_STROKE_DASHOFFSET = -912;
+const YOUR_ACCOUNT_DATA = {
+    name: 'John Doe'
+
+};
 
 const startBtn = document.querySelector('.start-btn');
 const resetBtn = document.querySelector('.reset-btn');
@@ -403,9 +407,14 @@ const closeSessionHistory = () => {
         const commentBox = document.querySelector('.note-comment');
 
         if (e.code === 'Escape') {
+            const userNameInput = document.querySelector('.user-name');
+            const title = document.querySelector('.title');
+
+            userNameInput.value = '';
+            userNameInput.classList.remove('user-input--show');
+            title.classList.remove('hide');
 
             if (commentBox.classList.contains('note-comment--show')) {
-                console.log('comment');
                 closeCommentEditing();
                 return;
             } 
@@ -428,7 +437,6 @@ closeSessionHistory();
 const closeCommentEditing = () => {
     const commentBox = document.querySelector('.note-comment');
     const notesList = document.querySelector('.session-history'); 
-    const notesHistory = document.querySelector('.notes-history');
 
     commentBox.classList.remove('note-comment--show');
     commentBox.value = '';
@@ -470,6 +478,12 @@ const hideNotes = () => {
 
     closeBtn.addEventListener('click', () => {
         const commentBox = document.querySelector('.note-comment');
+        const title = document.querySelector('.title');
+        const userNameInput = document.querySelector('.user-name');
+
+        userNameInput.value = '';
+        userNameInput.classList.remove('user-input--show');
+        title.classList.remove('hide');
 
         if (commentBox.classList.contains('note-comment--show')) {
             closeCommentEditing();
@@ -524,10 +538,11 @@ const dateBuilder = () => {
 
 const addSessionNote = () => {
     const parentNode = document.querySelector('.session-history ul');
+    const clearBtn = document.querySelector('[data-clear-all]');
     let index = sessionCounter - 1;
 
     while (index < sessionCounter) {
-        const li= document.createElement('li');
+        const li = document.createElement('li');
         li.innerHTML = `
             <div class="session-date"><span class="icon-access_time"></span>${dateBuilder()}</div>
             <div class="session-number">Session ${sessionCounter}</div>
@@ -537,12 +552,17 @@ const addSessionNote = () => {
         `;
         parentNode.append(li);
 
+        clearBtn.dataset.clearAll = true;
+        clearSessionList();
+
         index++;
     }
+
+    showClearBtn();
 };
 
 const soundOnMode = () => {
-    const audio = new Audio('/sound/alarm.mp3');
+    const audio = new Audio('/sound/alarm2.mp3');
 
     if (soundMode) audio.play();
 };
@@ -630,42 +650,12 @@ editComment();
 saveComment();
 deleteComment();
 
-const closeByMouseClick = (input, container) => {
-
-    new Promise(function(resolve) {
-        const id = setTimeout(() => {
-            if (input.classList.contains('user-input--show')) {
-    
-                container.addEventListener('click', (e) => {
-                    console.log('hello');
-                    if (!e.target.classList.contains('user-input--show')) {
-                        input.classList.remove('user-input--show');
-                    }
-                }); 
-                
-                resolve(id);
-            }
-        }, 10);
-    })
-    .then((id) => {
-        clearInterval(id);
-        container.removeEventListener('click', (e) => {
-            console.log('hello');
-            if (!e.target.classList.contains('user-input--show')) {
-                input.classList.remove('user-input--show');
-            }
-        });
-    });
-    
-};
-
 const createUserName = () => {
     const user = document.querySelector('.icon-location_history');
     const userNameInput = document.querySelector('.user-name');
     const title = document.querySelector('.title');
-    const notesHistory = document.querySelector('.notes-history');
 
-    user.addEventListener('click', () => {
+    user.addEventListener('click', (e) => {
         title.classList.toggle('hide');
         userNameInput.classList.toggle('user-input--show');
         
@@ -684,6 +674,8 @@ const saveUserName = () => {
     const userNameInput = document.querySelector('.user-name');
     const accountName = document.querySelector('.account-name');
 
+    userNameInput.setAttribute('maxlength', '25');
+
     userNameInput.addEventListener('keydown', (e) => {
         if (e.code === 'Enter') {
             const name = userNameInput.value;
@@ -697,3 +689,27 @@ const saveUserName = () => {
 };
 
 saveUserName();
+
+const showClearBtn = () => {
+    const clearBtn = document.querySelector('[data-clear-all]');
+
+    const showBtn = clearBtn.getAttribute('data-clear-all');
+
+    if (showBtn) {
+        clearBtn.classList.add('visible');
+    }
+
+
+};
+
+const clearSessionList = () => {
+    const sessionList = document.querySelector('[data-session-list]');
+    const clearBtn = document.querySelector('[data-clear-all]');
+
+    clearBtn.addEventListener('click', () => {
+        sessionList.innerHTML = '';
+        clearBtn.classList.remove('visible');
+
+        sessionCounter = 1;
+    });
+};

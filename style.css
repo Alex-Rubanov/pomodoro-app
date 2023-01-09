@@ -379,10 +379,11 @@ body {
 
 .close-btn {
     position: absolute;
-    top: 5px;
-    left: 0px;
-    padding: 1rem;
+    top: 7px;
+    right: 15px;
+    padding: 1rem 0 1rem 0.5rem;
     cursor: pointer;
+    z-index: 10;
 }
 
 .close-btn span:first-child {
@@ -412,10 +413,10 @@ body {
 }
 
 .session-history {
-    margin-top: 60px;
-    padding: 0.5rem 3rem 0.5rem 0.5rem;
+    margin-top: 75px;
+    padding: 0 3rem 0.5rem 0.5rem;
     overflow: auto;
-    height: 70%;
+    height: 60%;
     position: relative;
 }
 
@@ -501,25 +502,17 @@ body {
     border-radius: 50%;
     position: absolute;
     top: 7px;
-    right: 15px;
+    left: 10px;
     background-color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.icon-location_history {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 30px;
     cursor: pointer;
 }
 
 .user-info .icon-location_history:before {
     position: absolute;
     top: -9px;
-    right: -17px;
+    left: -6px;
+    font-size: 35px;
+    padding: 0.5rem;
     overflow: hidden;
     transition: 0.3s ease;
 }
@@ -540,7 +533,7 @@ body {
 .user-info .user-input--show {
     visibility: visible;
     position: absolute;
-    right: 40px;
+    left: 40px;
     width: 80px;
     height: 36px;
     border: 0.5px solid #fff;
@@ -548,15 +541,15 @@ body {
     border-bottom: 0.5px solid #fff;
     background-color: transparent;
     outline: none;
-    padding-right: 5px;
+    padding-left: 5px;
     font-size: 18px;
     color: rgba(255, 255, 255, 0.9)
 }
 
 .user-info .account-name {
     position: absolute;
-    top: 40px;
-    right: 2px;
+    top: 45px;
+    left: 2px;
     font-size: 15px;
     transition: 0.5s;
 }
@@ -588,16 +581,41 @@ body {
     opacity: 0;
 }
 
+[data-clear-all] {
+    display: block;
+    opacity: 0;
+    margin: 1.5rem auto 0;
+    padding: 0.75rem;
+    font-size: 16px;
+    color:rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    border: 1px solid transparent;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition:  0.2s ease;
+}
+
+[data-clear-all]:hover {
+    border: 1px solid rgb(250, 128, 114);
+    border-radius: 5px;
+}
+
+.visible {
+    opacity: 1;
+}
 
 
 
 
-@media (max-width: 1020px) {
+@media (max-width: 1200px) {
     .app-wrapper {
         width: 70%;
-        height: 70vh;
+        height: 85vh;
    }
+}
 
+@media (max-width: 1020px) {
     .current-values {
         flex-direction: column;
         align-items: center;
@@ -611,6 +629,10 @@ body {
 }
 
 @media (max-width: 900px) {
+    .app-wrapper {
+        width: 75%;
+        height: 85vh;
+   }
 
 }
 
@@ -646,10 +668,16 @@ body {
 }
 
 @media (max-width: 450px) {
+    .app-wrapper {
+        width: 95%;
+        height: 95vh;
+   }
+
     .session-history {
-        margin-top: 40px;
+        margin-top: 70px;
         padding-left: 10px;
         padding-right: 2.5rem;
+        height: 65%;
     }
 
     .session-history ul li .session-descr {
@@ -667,69 +695,12 @@ body {
 
     .close-btn {
         position: absolute;
-        top: 5px;
-        left: 88%;
-        padding: 1rem 0 1rem 0.5rem;
-        cursor: pointer;
-        z-index: 10;
-    }
-
-    .user-info {
-        height: 35px;
-        width: 35px;
-        border-radius: 50%;
-        position: absolute;
         top: 7px;
-        left: 10px;
-        background-color: transparent;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        right: 5px;
     }
 
-    .user-info .icon-location_history:before {
-        position: absolute;
-        top: -9px;
-        left: -17px;
-        overflow: hidden;
-        transition: 0.3s ease;
-    }
-
-    .user-info .icon-location_history:hover:before {
-        color: rgb(112, 195, 112);
-    }
-
-    .user-info .user-name, .user-name:focus {
-        width: 0;
-        height: 36px;
-        border-color: transparent;
-        background-color: transparent;
-        outline: none;
-        visibility: hidden;
-    }
-
-    .user-info .user-input--show {
-        visibility: visible;
-        position: absolute;
-        left: 40px;
-        width: 80px;
-        height: 36px;
-        border: 0.5px solid #fff;
-        border-color: transparent;
-        border-bottom: 0.5px solid #fff;
-        background-color: transparent;
-        outline: none;
-        padding-left: 5px;
-        font-size: 18px;
-        color: rgba(255, 255, 255, 0.9)
-    }
-
-    .user-info .account-name {
-        position: absolute;
-        top: 40px;
-        left: 2px;
-        font-size: 15px;
-        transition: 0.5s;
+    [data-clear-all] {
+        margin-top: 0.5rem;
     }
 
     .icon-settings:hover:after,
