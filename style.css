@@ -547,6 +547,9 @@ body {
 }
 
 .user-info .account-name {
+    display: block;
+    max-height: 40px;
+    overflow: hidden;
     position: absolute;
     top: 45px;
     left: 2px;
@@ -601,10 +604,47 @@ body {
     border-radius: 5px;
 }
 
+.journal {
+    display: flex;
+    align-items: center;
+    gap: 40%;
+}
+
+.icon-history_edu {
+    padding-left: 7px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.journal-title {
+    font-size: 22px;
+    opacity: 0;
+    transition: 0.5s ease;
+}
+
+.journal-history {
+    margin-top: 10px;
+    font-size: 12px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    opacity: 0;
+    transition: 0.3s ease;
+}
+
+[data-journal-save] {
+    cursor: pointer;
+}
+
+
+
 .visible {
     opacity: 1;
 }
 
+.hidden {
+    display: none;
+}
 
 
 

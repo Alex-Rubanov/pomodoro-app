@@ -537,7 +537,7 @@ const dateBuilder = () => {
 };
 
 const addSessionNote = () => {
-    const parentNode = document.querySelector('.session-history ul');
+    const parentNode = document.querySelector('.session-history [data-session-list]');
     const clearBtn = document.querySelector('[data-clear-all]');
     let index = sessionCounter - 1;
 
@@ -697,14 +697,16 @@ saveUserName();
 
 const showClearBtn = () => {
     const clearBtn = document.querySelector('[data-clear-all]');
-
     const showBtn = clearBtn.getAttribute('data-clear-all');
+    const sessionList = document.querySelector('[data-session-list]');
 
     if (showBtn) {
         clearBtn.classList.add('visible');
     }
 
-
+    if(sessionList.classList.contains('hidden')) {
+        clearBtn.classList.remove('visible');
+    }
 };
 
 const clearSessionList = () => {
@@ -733,4 +735,21 @@ const saveData = () => {
     });
 };
 
+const openJournal = () => {
+    const openIcon = document.querySelector('.icon-history_edu');
+    const journalTitle = document.querySelector('.journal-title');
+    const journalHistory = document.querySelector('.journal-history');
+    const sessionListItems = document.querySelector('[data-session-list]');
 
+    openIcon.addEventListener('click', () => {
+        journalTitle.classList.toggle('visible');
+        journalHistory.classList.toggle('visible');
+        sessionListItems.classList.toggle('hidden');
+
+        showClearBtn();
+
+    });
+
+};
+
+openJournal();
