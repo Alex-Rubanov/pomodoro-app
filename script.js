@@ -6,8 +6,8 @@ const SESSION_TIME_COLOR = 'rgb(250, 128, 114)';
 const BREAK_TIME_COLOR = 'rgb(107,142,35)';
 const SVG_STROKE_DASHOFFSET = -912;
 const YOUR_ACCOUNT_DATA = {
-    name: 'John Doe'
-
+    name: 'John Doe',
+    sessions: {}
 };
 
 const startBtn = document.querySelector('.start-btn');
@@ -543,6 +543,8 @@ const addSessionNote = () => {
 
     while (index < sessionCounter) {
         const li = document.createElement('li');
+
+        li.setAttribute('data-list-item', index);
         li.innerHTML = `
             <div class="session-date"><span class="icon-access_time"></span>${dateBuilder()}</div>
             <div class="session-number">Session ${sessionCounter}</div>
@@ -551,6 +553,7 @@ const addSessionNote = () => {
             <span data-remove-note="${index}" class="icon-highlight_remove"></span>
         `;
         parentNode.append(li);
+        saveData();
 
         clearBtn.dataset.clearAll = true;
         clearSessionList();
@@ -684,6 +687,8 @@ const saveUserName = () => {
             userNameInput.value = '';
             userNameInput.classList.remove('user-input--show');
             title.classList.remove('hide');
+
+            YOUR_ACCOUNT_DATA.name = name;
         }
     });
 };
@@ -710,6 +715,22 @@ const clearSessionList = () => {
         sessionList.innerHTML = '';
         clearBtn.classList.remove('visible');
 
+        YOUR_ACCOUNT_DATA.sessions = {};
+
         sessionCounter = 1;
     });
 };
+
+const saveData = () => {
+    const listItems = document.querySelectorAll('[data-list-item]');
+
+    listItems.forEach((item, index) => {
+        const date = item.firstElementChild.textContent;
+        const comment = item.querySelector('[data-comment]').textContent;
+
+        YOUR_ACCOUNT_DATA.sessions[index] = {};
+        YOUR_ACCOUNT_DATA.sessions[index][date] = comment;
+    });
+};
+
+
