@@ -614,12 +614,17 @@ body {
     padding-left: 7px;
     font-size: 25px;
     cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.icon-history_edu:hover {
+    color: rgb(112, 195, 112);
 }
 
 .journal-title {
     font-size: 22px;
     opacity: 0;
-    transition: 0.5s ease;
+    transition: 0.3s ease;
 }
 
 .journal-history {
@@ -629,13 +634,32 @@ body {
     gap: 10px;
     justify-content: center;
     opacity: 0;
-    transition: 0.3s ease;
+    transition: 0.2s;
 }
 
 [data-journal-save] {
     cursor: pointer;
 }
 
+.session-history ul .journal-item {
+    grid-template-columns: 1fr;
+    grid-template-areas: none;
+}
+
+.session-history ul .journal-date {
+    font-size: 18px;
+}
+
+.session-history ul .journal-item .icon-access_time {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.session-history ul .journal-item .journal-comment {
+    color: rgb(207, 207, 136);
+    padding: 0.5rem;
+}
 
 
 .visible {

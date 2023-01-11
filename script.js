@@ -561,6 +561,10 @@ const addSessionNote = () => {
         index++;
     }
 
+    if (document.querySelector('[data-journal-save]:checked') != null) {
+        renderJournalNotes();
+    }
+
     showClearBtn();
 };
 
@@ -603,7 +607,10 @@ const saveComment = () => {
 
             if ([...comments][index].textContent != false) {
                 [...deleteIcons][index].style.setProperty('opacity', 1);
-            }          
+            }   
+            
+            saveData();
+            renderJournalNotes();
         }
     });
 };
@@ -700,8 +707,9 @@ const showClearBtn = () => {
     const showBtn = clearBtn.getAttribute('data-clear-all');
     const sessionList = document.querySelector('[data-session-list]');
 
-    if (showBtn) {
+    if (showBtn && sessionList.firstChild != null) {
         clearBtn.classList.add('visible');
+        console.log(sessionList);
     }
 
     if(sessionList.classList.contains('hidden')) {
@@ -730,8 +738,8 @@ const saveData = () => {
         const date = item.firstElementChild.textContent;
         const comment = item.querySelector('[data-comment]').textContent;
 
-        YOUR_ACCOUNT_DATA.sessions[index] = {};
-        YOUR_ACCOUNT_DATA.sessions[index][date] = comment;
+        YOUR_ACCOUNT_DATA.sessions[index] = {date: date, comment: comment};
+
     });
 };
 
@@ -747,9 +755,62 @@ const openJournal = () => {
         sessionListItems.classList.toggle('hidden');
 
         showClearBtn();
-
+        hideJournalHistory();
     });
 
 };
 
 openJournal();
+
+const renderJournalNotes = () => {
+    const journalList = document.querySelector('[data-journal-list]');
+
+    clearJournalList();
+
+    for (let session in YOUR_ACCOUNT_DATA.sessions) {
+
+        const li = document.createElement('li');
+        li.classList.add('journal-item');
+        const { date, comment } = YOUR_ACCOUNT_DATA.sessions[session];
+
+        li.innerHTML = `
+            <span class="icon-access_time">
+                <span class="journal-date">${date}</span>
+            </span>
+            <div class="journal-comment">${comment}</div>
+        `;
+
+        journalList.append(li);
+    }
+
+    return;
+};
+
+const clearJournalList = () => {
+    document.querySelector('[data-journal-list]').innerHTML = '';
+};
+
+const saveInJournal = () => {
+    const checkbox = document.querySelector('[data-journal-save]');
+
+    checkbox.addEventListener('click', () => {
+        const checkboxStatus = document.querySelector('[data-journal-save]:checked') != null;
+        
+        if (checkboxStatus) {
+            clearJournalList();
+
+            renderJournalNotes();
+            return;
+        }  
+
+        clearJournalList();
+    });   
+};
+
+saveInJournal();
+
+const hideJournalHistory = () => {
+
+    document.querySelector('[data-journal-list]').classList.toggle('hidden');
+
+};
